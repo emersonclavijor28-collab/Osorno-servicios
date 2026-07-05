@@ -5,28 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Osorno Servicios</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background-color: #f7f9fc; color: #333; }
-        header { background-color: #1e3a8a; color: white; padding: 20px; text-align: center; font-size: 22px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .sub-header { background-color: #3b82f6; color: white; text-align: center; padding: 8px; font-size: 14px; }
-        .container { padding: 20px; max-width: 500px; margin: 0 auto; text-align: center; }
-        .welcome-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .btn-whatsapp { background-color: #25D366; color: white; padding: 14px 28px; border: none; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.3s; }
-        .btn-whatsapp:hover { background-color: #128C7E; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background-color: #f4f6f9; color: #333; }
+        header { background-color: #1e3a8a; color: white; padding: 20px; text-align: center; font-size: 22px; font-weight: bold; position: sticky; top: 0; z-index: 100; }
+        .sub-header { background-color: #3b82f6; color: white; text-align: center; padding: 6px; font-size: 13px; font-weight: 500; }
+        .container { padding: 15px; max-width: 500px; margin: 0 auto; }
+        .intro { text-align: center; margin-bottom: 20px; font-size: 15px; color: #666; }
+        
+        /* Contenedor de botones en cuadrícula (2 columnas) */
+        .grid-categorias { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 10px; }
+        
+        /* Estilo de cada botón de categoría */
+        .card-categoria { background: white; border: none; padding: 25px 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.03); text-align: center; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; -webkit-tap-highlight-color: transparent; }
+        .card-categoria:active { transform: scale(0.95); background-color: #f0f4ff; }
+        .card-categoria .icono { font-size: 32px; margin-bottom: 10px; display: block; }
+        .card-categoria .nombre { font-size: 16px; font-weight: bold; color: #1e3a8a; }
     </style>
 </head>
 <body>
 
     <header>🛠️ Osorno Servicios</header>
-    <div class="sub-header">📍 Exclusivo Ciudad de Osorno</div>
+    <div class="sub-header">📍 Soluciones del Hogar en Osorno</div>
     
     <div class="container">
-        <div class="welcome-card">
-            <h2>¡Encuentra maestros verificados cerca de ti!</h2>
-            <p>Conectamos a vecinos de Osorno con gasfiters, electricistas y servicios para el hogar de forma directa.</p>
+        <p class="intro">¿Qué servicio necesitas hoy? Elige una categoría para ver profesionales disponibles:</p>
+        
+        <div class="grid-categorias">
+            <!-- Botón Gasfitería -->
+            <button class="card-categoria" onclick="alert('Próximamente verás la lista de Gasfiters')">
+                <span class="icono">🚰</span>
+                <span class="nombre">Gasfitería</span>
+            </button>
             
-            <a href="https://wa.me/56912345678?text=Hola,%20vi%20tu%20perfil%20en%20Osorno%20Servicios" target="_blank" class="btn-whatsapp">
-                📲 Probar Conexión por WhatsApp
-            </a>
+            <!-- Botón Electricidad -->
+            <button class="card-categoria" onclick="alert('Próximamente verás la lista de Electricistas')">
+                <span class="icono">⚡</span>
+                <span class="nombre">Electricistas</span>
+            </button>
+            
+            <!-- Botón Construcción -->
+            <button class="card-categoria" onclick="alert('Próximamente verás la lista de Maestros de Construcción')">
+                <span class="icono">🧱</span>
+                <span class="nombre">Construcción</span>
+            </button>
+            
+            <!-- Botón Limpieza y Estufas -->
+            <button class="card-categoria" onclick="alert('Próximamente verás la lista de Limpieza y Combustión')">
+                <span class="icono">🔥</span>
+                <span class="nombre">Ductos y Estufas</span>
+            </button>
         </div>
     </div>
 
