@@ -6,19 +6,36 @@
     <title>Osorno Servicios</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background-color: #f4f6f9; color: #333; }
-        header { background-color: #1e3a8a; color: white; padding: 20px; text-align: center; font-size: 22px; font-weight: bold; position: sticky; top: 0; z-index: 100; }
+        header { background-color: #1e3a8a; color: white; padding: 18px; text-align: center; font-size: 22px; font-weight: bold; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .sub-header { background-color: #3b82f6; color: white; text-align: center; padding: 6px; font-size: 13px; font-weight: 500; }
         .container { padding: 15px; max-width: 500px; margin: 0 auto; }
+        
+        /* Control de pantallas */
+        .pantalla { display: none; }
+        .pantalla.activa { display: block; }
+
         .intro { text-align: center; margin-bottom: 20px; font-size: 15px; color: #666; }
         
-        /* Contenedor de botones en cuadrícula (2 columnas) */
-        .grid-categorias { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 10px; }
-        
-        /* Estilo de cada botón de categoría */
-        .card-categoria { background: white; border: none; padding: 25px 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.03); text-align: center; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; -webkit-tap-highlight-color: transparent; }
+        /* Cuadrícula de Categorías */
+        .grid-categorias { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .card-categoria { background: white; border: none; padding: 25px 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.03); text-align: center; cursor: pointer; transition: transform 0.2s; -webkit-tap-highlight-color: transparent; }
         .card-categoria:active { transform: scale(0.95); background-color: #f0f4ff; }
         .card-categoria .icono { font-size: 32px; margin-bottom: 10px; display: block; }
         .card-categoria .nombre { font-size: 16px; font-weight: bold; color: #1e3a8a; }
+
+        /* Tarjetas de Profesionales */
+        .btn-volver { background: #e5e7eb; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; color: #4b5563; cursor: pointer; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 5px; }
+        .titulo-categoria { font-size: 20px; color: #1e3a8a; margin-bottom: 15px; font-weight: bold; text-align: left; }
+        
+        .card-profesional { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.03); border-left: 5px solid #25d366; text-align: left; }
+        .profesional-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .profesional-nombre { font-size: 18px; font-weight: bold; color: #111827; }
+        .badge-verificado { background-color: #d1fae5; color: #065f46; font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: bold; }
+        .profesional-cobertura { font-size: 13px; color: #2563eb; font-weight: 500; margin-bottom: 8px; }
+        .profesional-descripcion { font-size: 14px; color: #4b5563; margin-bottom: 15px; line-height: 1.4; }
+        
+        .btn-contacto { background-color: #25D366; color: white; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: bold; text-align: center; display: block; transition: background 0.2s; box-shadow: 0 2px 4px rgba(37,211,102,0.2); }
+        .btn-contacto:active { background-color: #128C7E; }
     </style>
 </head>
 <body>
@@ -27,34 +44,96 @@
     <div class="sub-header">📍 Soluciones del Hogar en Osorno</div>
     
     <div class="container">
-        <p class="intro">¿Qué servicio necesitas hoy? Elige una categoría para ver profesionales disponibles:</p>
-        
-        <div class="grid-categorias">
-            <!-- Botón Gasfitería -->
-            <button class="card-categoria" onclick="alert('Próximamente verás la lista de Gasfiters')">
-                <span class="icono">🚰</span>
-                <span class="nombre">Gasfitería</span>
-            </button>
-            
-            <!-- Botón Electricidad -->
-            <button class="card-categoria" onclick="alert('Próximamente verás la lista de Electricistas')">
-                <span class="icono">⚡</span>
-                <span class="nombre">Electricistas</span>
-            </button>
-            
-            <!-- Botón Construcción -->
-            <button class="card-categoria" onclick="alert('Próximamente verás la lista de Maestros de Construcción')">
-                <span class="icono">🧱</span>
-                <span class="nombre">Construcción</span>
-            </button>
-            
-            <!-- Botón Limpieza y Estufas -->
-            <button class="card-categoria" onclick="alert('Próximamente verás la lista de Limpieza y Combustión')">
-                <span class="icono">🔥</span>
-                <span class="nombre">Ductos y Estufas</span>
-            </button>
+
+        <!-- PANTALLA 1: MENÚ PRINCIPAL -->
+        <div id="pantalla-menu" class="pantalla activa">
+            <p class="intro">¿Qué servicio necesitas hoy? Elige una categoría para ver profesionales disponibles:</p>
+            <div class="grid-categorias">
+                <button class="card-categoria" onclick="mostrarCategoria('Gasfitería')">
+                    <span class="icono">🚰</span><span class="nombre">Gasfitería</span>
+                </button>
+                <button class="card-categoria" onclick="mostrarCategoria('Electricistas')">
+                    <span class="icono">⚡</span><span class="nombre">Electricistas</span>
+                </button>
+                <button class="card-categoria" onclick="mostrarCategoria('Construcción')">
+                    <span class="icono">🧱</span><span class="nombre">Construcción</span>
+                </button>
+                <button class="card-categoria" onclick="mostrarCategoria('Ductos y Estufas')">
+                    <span class="icono">🔥</span><span class="nombre">Ductos y Estufas</span>
+                </button>
+            </div>
         </div>
+
+        <!-- PANTALLA 2: LISTA DE PROFESIONALES -->
+        <div id="pantalla-lista" class="pantalla">
+            <button class="btn-volver" onclick="mostrarMenu()">← Volver al menú</button>
+            <div id="nombre-categoria-activa" class="titulo-categoria">Categoría</div>
+            
+            <!-- Aquí el código inyectará dinámicamente las tarjetas de los maestros -->
+            <div id="contenedor-profesionales"></div>
+        </div>
+
     </div>
 
+    <!-- LÓGICA DE LA APP (JAVASCRIPT) -->
+    <script>
+        // Datos de simulación (Nuestros primeros maestros en Osorno)
+        const baseDeDatos = {
+            "Gasfitería": [
+                { nombre: "Juan Carlos Soto", cobertura: "📍 Cobertura: Todo Osorno (Rahue, Francke, Centro)", descripcion: "Especialista en instalación de calefonts, reparación de fugas de agua y destapes de alcantarillado. Más de 10 años de experiencia.", celular: "56912345678" },
+                { nombre: "Pedro Almonacid", cobertura: "📍 Cobertura: Rahue Alto y Rahue Bajo", descripcion: "Gasfitería general, mantención de griferías y cañerías de cobre/PPR. Trabajo rápido y garantizado.", celular: "56987654321" }
+            ],
+            "Electricistas": [
+                { nombre: "Carlos Méndez", cobertura: "📍 Cobertura: Las Quemas, Pilauco y Centro", descripcion: "Técnico certificado SEC. Instalaciones eléctricas domiciliarias, aumento de capacidad, tableros y cortocircuitos.", celular: "56955554444" }
+            ],
+            "Construcción": [
+                { nombre: "Maestro Hugo", cobertura: "📍 Cobertura: Todo Osorno / Alrededores", descripcion: "Carpintería, ampliaciones, techumbres, radieres y colocación de cerámicas. Presupuestos gratis en terreno.", celular: "56933332222" }
+            ],
+            "Ductos y Estufas": [
+                { nombre: "Jorge Cárdenas", cobertura: "📍 Cobertura: Francke, Ovejería y Quinta Centenario", descripcion: "Limpieza profunda de caños de combustión lenta, cocinas a leña y estufas a pellet. Evite siniestros, trabajo con kit profesional.", celular: "56977778888" }
+            ]
+        };
+
+        // Función para cambiar a la pantalla de profesionales
+        function mostrarCategoria(categoria) {
+            document.getElementById('pantalla-menu').classList.remove('activa');
+            document.getElementById('pantalla-lista').classList.add('activa');
+            document.getElementById('nombre-categoria-activa').innerText = "Maestros en " + categoria;
+            
+            const contenedor = document.getElementById('contenedor-profesionales');
+            contenedor.innerHTML = ""; // Limpiar lista anterior
+            
+            const listaMaestros = baseDeDatos[categoria] || [];
+            
+            if(listaMaestros.length === 0) {
+                contenedor.innerHTML = "<p style='color:#666;'>Por el momento no hay maestros registrados en esta categoría en Osorno.</p>";
+                return;
+            }
+
+            // Construir las tarjetas una por una
+            listaMaestros.forEach(maestro => {
+                const tarjeta = `
+                    <div class="card-profesional">
+                        <div class="profesional-header">
+                            <div class="profesional-nombre">${maestro.nombre}</div>
+                            <span class="badge-verificado">✅ Verificado</span>
+                        </div>
+                        <div class="profesional-cobertura">${maestro.cobertura}</div>
+                        <div class="profesional-descripcion">${maestro.descripcion}</div>
+                        <a href="https://wa.me/${maestro.celular}?text=Hola%20${encodeURIComponent(maestro.nombre)},%20vi%20tu%20perfil%20en%20Osorno%20Servicios%20y%20necesito%20una%20cotizacion." target="_blank" class="btn-contacto">
+                            💬 Contactar por WhatsApp
+                        </a>
+                    </div>
+                `;
+                contenedor.innerHTML += tarjeta;
+            });
+        }
+
+        // Función para regresar al menú principal
+        function mostrarMenu() {
+            document.getElementById('pantalla-lista').classList.remove('activa');
+            document.getElementById('pantalla-menu').classList.add('activa');
+        }
+    </script>
 </body>
 </html>
