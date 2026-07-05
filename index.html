@@ -111,11 +111,10 @@
             font-weight: 700; margin-top: 12px; box-shadow: 0 4px 8px rgba(34,197,94,0.15);
         }
 
-        /* NUEVO: Botón Dejar Reseña */
         .btn-evaluar {
             background: #fff; color: #475569; border: 1px solid #cbd5e1; display: block;
             text-align: center; padding: 8px; border-radius: 8px; font-size: 13px; font-weight: 600;
-            margin-top: 8px; cursor: pointer; text-decoration: none;
+            margin-top: 8px; cursor: pointer; text-decoration: none; width: 100%; box-sizing: border-box;
         }
 
         /* Historial de Reseñas en tarjeta */
@@ -125,7 +124,7 @@
         .item-comentario { border-bottom: 1px dashed #e2e8f0; padding: 6px 0; }
         .item-comentario:last-child { border: none; }
 
-        /* NUEVO: Ventana Modal Flotante */
+        /* Ventana Modal Flotante */
         .modal {
             display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
@@ -240,7 +239,7 @@
 
     </div>
 
-    <!-- NUEVO: Formulario Flotante de Calificación (Modal) -->
+    <!-- Formulario Flotante de Calificación (Modal) -->
     <div id="modal-calificacion" class="modal">
         <div class="modal-contenido">
             <h3 style="margin-top:0; color:var(--azul-premium);" id="modal-titulo-maestro">Calificar Maestro</h3>
@@ -255,7 +254,7 @@
             </div>
 
             <label>Escribe tu reseña sobre el servicio:</label>
-            <textarea id="modal-comentario" rows="3" placeholder="Ej: Llegó puntual a Rahue, solucionó el problema del calefont rápido y cobró lo justo."></textarea>
+            <textarea id="modal-comentario" rows="3" placeholder="Ej: Llegó puntual a Rahue, solucionó el problema rápido y cobró lo justo."></textarea>
             
             <button class="btn-primario" onclick="guardarCalificacionPro()">Publicar Evaluación</button>
             <button class="btn-volver" onclick="cerrarModalCalificacion()" style="width:100%; margin-top:10px;">Cancelar</button>
@@ -271,7 +270,6 @@
     <script>
         const WHATSAPP_ADMINISTRADOR = "569XXXXXXXX"; 
 
-        // Modificamos la base de datos para aceptar un arreglo interno de reseñas reales
         const profesionalesPorDefecto = [
             { 
                 nombre: "Luis Silva", categoria: "Gasfitería", cobertura: "Rahue Alto y Centro", fono: "56912345678", 
@@ -298,12 +296,15 @@
             }
         ];
 
-        if (!localStorage.getItem('maestros')) {
+        // CORRECCIÓN AUTOMÁTICA DE FORMATOS VIEJOS
+        const datosLocales = localStorage.getItem('maestros');
+        if (!datosLocales || !datosLocales.includes('"reseñas"')) {
             localStorage.setItem('maestros', JSON.stringify(profesionalesPorDefecto));
         }
 
         let maestroSeleccionadoParaEvaluar = null;
         let votoEstrellasSeleccionado = 0;
+        let categoriaActualAbierta = ""; // Guarda en qué categoría estamos parados
 
         function irA(pantallaId) {
             document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
@@ -334,7 +335,6 @@
             }
         }
 
-        // Función auxiliar para calcular el promedio y construir la visualización de estrellas
         function obtenerRatingVisual(maestro) {
             if(!maestro.reseñas || maestro.reseñas.length === 0) return "⭐ Nuevo (Sin reseñas)";
             const suma = maestro.reseñas.reduce((acc, r) => acc + r.estrellas, 0);
@@ -401,7 +401,9 @@
             const cliente = JSON.parse(localStorage.getItem('cliente'));
             const maestros = JSON.parse(localStorage.getItem('maestros'));
             
-            const indice = maestros.findIndex(m => m.nombre === maestroSeleccionadoParaEvaluar);
+            // CORREGIDO: Búsqueda exacta limpia por nombre para evitar fallos
+            const indice = maestros.findIndex(m => m.nombre.trim() === maestroSeleccionadoParaEvaluar.trim());
+            
             if(indice !== -1) {
                 if(!maestros[indice].reseñas) maestros[indice].reseñas = [];
                 
@@ -416,13 +418,16 @@
                 alert("¡Muchas gracias! Tu opinión ayuda a la comunidad de Osorno.");
                 cerrarModalCalificacion();
                 
-                // Refrescar pantalla actual
+                // CORREGIDO: Forzar recarga visual instantánea de la pantalla donde estás parado
                 const inputBuscar = document.getElementById('input-buscar').value;
                 if(inputBuscar !== "" || document.getElementById('select-filtro-sector').value !== "") {
                     filtrarBusquedaGlobal();
-                } else {
-                    verCategoria(maestros[indice].categoria);
+                } else if (categoriaActualAbierta !== "") {
+                    verCategoria(categoriaActualAbierta);
                 }
+            } else {
+                alert("Hubo un error al ubicar al profesional. Reintenta desde la lista.");
+                cerrarModalCalificacion();
             }
         }
 
@@ -458,6 +463,7 @@
 
             filtrados.forEach(m => {
                 const iniciales = m.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                // CORREGIDO: Se envía m.nombre limpio sin concatenaciones raras en el onclick del botón evaluar
                 contenedorLista.innerHTML += `
                     <div class="card-profesional" style="border-left: 5px solid ${m.verificado ? 'var(--verde-wa)' : '#cbd5e1'}">
                         <div class="prof-bloque-superior">
@@ -473,7 +479,7 @@
                         <div class="cobertura-tag">📍 Cobertura: ${m.cobertura}</div>
                         <div class="prof-desc">${m.desc}</div>
                         ${generarBloqueComentariosHTML(m)}
-                        <button class="btn-evaluar" onclick="abrirModalCalificacion('${m.nombre}')">📝 Dejar Reseña como Vecino</button>
+                        <button class="btn-evaluar" onclick="abrirModalCalificacion('${m.nombre.replace(/'/g, "\\'")}')">📝 Dejar Reseña como Vecino</button>
                         <a class="btn-whatsapp" href="https://wa.me/${m.fono}?text=Hola%20${encodeURIComponent(m.nombre)},%20vi%20tu%20perfil%20en%20Osorno%20Servicios." target="_blank">
                             <span>💬</span> Contactar por WhatsApp
                         </a>
@@ -483,6 +489,7 @@
         }
 
         function verCategoria(cat) {
+            categoriaActualAbierta = cat; // Registrar categoría actual
             irA('lista');
             document.getElementById('titulo-cat').innerText = "Especialistas en " + cat;
             const maestros = JSON.parse(localStorage.getItem('maestros'));
@@ -512,7 +519,7 @@
                         <div class="cobertura-tag">📍 Cobertura: ${m.cobertura}</div>
                         <div class="prof-desc">${m.desc}</div>
                         ${generarBloqueComentariosHTML(m)}
-                        <button class="btn-evaluar" onclick="abrirModalCalificacion('${m.nombre}')">📝 Dejar Reseña como Vecino</button>
+                        <button class="btn-evaluar" onclick="abrirModalCalificacion('${m.nombre.replace(/'/g, "\\'")}')">📝 Dejar Reseña como Vecino</button>
                         <a class="btn-whatsapp" href="https://wa.me/${m.fono}?text=Hola%20${encodeURIComponent(m.nombre)},%20vi%20tu%20perfil%20en%20Osorno%20Servicios%20y%20necesito%20una%20consulta." target="_blank">
                             <span>💬</span> Contactar por WhatsApp
                         </a>
