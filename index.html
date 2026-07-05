@@ -11,6 +11,7 @@
             --verde-wa: #22c55e; 
             --gris-fondo: #f8fafc;
             --texto-dark: #334155;
+            --amarillo-estrella: #eab308;
         }
         
         body { 
@@ -41,7 +42,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* NUEVO: Bloque de Búsqueda y Filtros Premium */
         .bloque-busqueda {
             background: white; padding: 16px; border-radius: 16px;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); margin-bottom: 20px;
@@ -56,21 +56,16 @@
         .select-sector {
             width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #cbd5e1;
             border-radius: 10px; font-size: 13px; font-weight: 600; color: #475569;
-            background-color: white;
         }
         
-        /* Grid de Categorías */
         .grid-categorias { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
         .card-categoria { 
             background: white; border: none; padding: 22px 12px; border-radius: 16px; 
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
-            text-align: center; cursor: pointer; font-weight: 700; color: #1e293b;
-            transition: all 0.2s ease; border: 1px solid #f1f5f9;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); text-align: center; cursor: pointer;
+            font-weight: 700; color: #1e293b; border: 1px solid #f1f5f9;
         }
-        .card-categoria:active { transform: scale(0.96); background-color: #f8fafc; }
         .card-categoria .icono { font-size: 34px; display: block; margin-bottom: 8px; }
 
-        /* Formularios */
         label { display: block; margin: 14px 0 6px; font-weight: 600; font-size: 14px; color: #1e293b; }
         input, select, textarea { 
             width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; 
@@ -116,11 +111,39 @@
             font-weight: 700; margin-top: 12px; box-shadow: 0 4px 8px rgba(34,197,94,0.15);
         }
 
+        /* NUEVO: Botón Dejar Reseña */
+        .btn-evaluar {
+            background: #fff; color: #475569; border: 1px solid #cbd5e1; display: block;
+            text-align: center; padding: 8px; border-radius: 8px; font-size: 13px; font-weight: 600;
+            margin-top: 8px; cursor: pointer; text-decoration: none;
+        }
+
+        /* Historial de Reseñas en tarjeta */
+        .contenedor-comentarios {
+            background: #f8fafc; border-radius: 10px; padding: 10px; margin-top: 10px; font-size: 12px;
+        }
+        .item-comentario { border-bottom: 1px dashed #e2e8f0; padding: 6px 0; }
+        .item-comentario:last-child { border: none; }
+
+        /* NUEVO: Ventana Modal Flotante */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+            z-index: 1000; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal.activo { display: flex; }
+        .modal-contenido {
+            background: white; width: 100%; max-width: 400px; padding: 20px;
+            border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        .estrellas-selector { display: flex; gap: 10px; font-size: 30px; margin: 10px 0; cursor: pointer; }
+        .estrella-voto { color: #cbd5e1; }
+        .estrella-voto.marcada { color: var(--amarillo-estrella); }
+
         /* Barra Inferior */
         .nav-inferior { 
             position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.92); 
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            display: flex; justify-content: space-around; padding: 12px 0 20px; 
+            backdrop-filter: blur(8px); display: flex; justify-content: space-around; padding: 12px 0 20px; 
             box-shadow: 0 -4px 12px rgba(0,0,0,0.03); border-top: 1px solid #f1f5f9;
         }
         .nav-item { background: none; border: none; color: #94a3b8; font-size: 11px; cursor: pointer; text-align: center; }
@@ -137,8 +160,6 @@
 
         <!-- PANTALLA 1: HOME -->
         <div id="pantalla-home" class="pantalla activa">
-            
-            <!-- NUEVO: Buscador Global de Servicios -->
             <div class="bloque-busqueda">
                 <input type="text" id="input-buscar" class="input-buscador" placeholder="¿Qué buscas? Ej: calefont, caño, cables..." oninput="filtrarBusquedaGlobal()">
                 <select id="select-filtro-sector" class="select-sector" onchange="filtrarBusquedaGlobal()">
@@ -151,7 +172,6 @@
                 </select>
             </div>
 
-            <!-- Contenedor dinámico para cuando se busca algo -->
             <div id="resultados-busqueda-directa" style="display:none; margin-bottom:20px;">
                 <h3 style="font-size:16px; margin-top:0; color:var(--azul-premium);">Resultados encontrados:</h3>
                 <div id="lista-resultados-globales"></div>
@@ -179,32 +199,21 @@
         <!-- PANTALLA 3: REGISTRO MAESTRO -->
         <div id="pantalla-registro-prof" class="pantalla">
             <h2 style="margin-top:0;">Registro de Profesionales</h2>
-            <p class="intro">Únete a la mayor red local de servicios. Envía tu perfil para iniciar tu proceso de revisión.</p>
             <form id="form-prof" onsubmit="registrarProfesional(event)">
                 <label>Nombre Completo</label>
                 <input type="text" id="p-nombre" required placeholder="Ej: Juan Soto">
-
                 <label>Categoría Principal</label>
                 <select id="p-cat">
                     <option>Gasfitería</option><option>Electricistas</option>
                     <option>Construcción</option><option>Ductos y Estufas</option>
                     <option>Línea Blanca</option><option>Jardinería</option>
                 </select>
-
                 <label>Sectores de Osorno donde atiende</label>
                 <input type="text" id="p-cobertura" required placeholder="Ej: Rahue Alto, Francke, Centro">
-
                 <label>WhatsApp de Contacto (con 569)</label>
                 <input type="tel" id="p-fono" required placeholder="Ej: 56912345678">
-
                 <label>Descripción de tus servicios</label>
-                <textarea id="p-desc" rows="3" required placeholder="Ej: Mantención de calefonts a gas, redes de agua..."></textarea>
-
-                <div style="background: #f0fdf4; padding: 12px; border-radius: 12px; margin-top: 15px; border: 1px dashed #22c55e; font-size: 13px; color: #14532d;">
-                    <strong style="display:block; margin-bottom:4px;">🛡️ Proceso de Seguridad Obligatorio</strong>
-                    Al enviar este formulario se te redirigirá a WhatsApp para enviar tu Certificado de Antecedentes vigente. Tu perfil no tendrá el sello verificado hasta cumplir este paso.
-                </div>
-
+                <textarea id="p-desc" rows="3" required placeholder="Ej: Mantención de calefonts, redes de agua..."></textarea>
                 <button type="submit" class="btn-primario">Enviar Postulación vía WhatsApp</button>
             </form>
         </div>
@@ -213,7 +222,7 @@
         <div id="pantalla-perfil" class="pantalla">
             <h2 style="margin-top:0;">Perfil de Usuario</h2>
             <div id="bloque-registro-cliente">
-                <p class="intro">Regístrate como vecino para desbloquear futuras herramientas de evaluación de servicios.</p>
+                <p class="intro">Regístrate como vecino para calificar a los maestros locales de la comuna.</p>
                 <form id="form-cliente" onsubmit="registrarCliente(event)">
                     <label>Tu Nombre</label>
                     <input type="text" id="c-nombre" required placeholder="Ej: María José">
@@ -225,38 +234,76 @@
             <div id="bloque-perfil-activo" style="display:none; background:white; padding:20px; border-radius:16px; border:1px solid #f1f5f9;">
                 <h3>¡Hola, <span id="user-nombre" style="color:var(--celeste-accent);"></span>!</h3>
                 <p>📍 <b>Sector residencial:</b> <span id="user-sector"></span></p>
-                <p style="font-size: 13px; color: #64748b;">Estás navegando en modo local. Pronto podrás calificar directamente a los maestros con tu cuenta de vecino activa.</p>
                 <button class="btn-volver" onclick="cerrarSesion()" style="background:#fee2e2; color:#991b1b; width:100%; border:none; padding:12px; margin-top:15px; border-radius:10px; font-weight:700;">Cerrar Sesión</button>
             </div>
         </div>
 
     </div>
 
+    <!-- NUEVO: Formulario Flotante de Calificación (Modal) -->
+    <div id="modal-calificacion" class="modal">
+        <div class="modal-contenido">
+            <h3 style="margin-top:0; color:var(--azul-premium);" id="modal-titulo-maestro">Calificar Maestro</h3>
+            <p style="font-size:13px; color:#64748b; margin-bottom:10px;">Selecciona el nivel de satisfacción:</p>
+            
+            <div class="estrellas-selector">
+                <span class="estrella-voto" onclick="asignarVotoEstrellas(1)">★</span>
+                <span class="estrella-voto" onclick="asignarVotoEstrellas(2)">★</span>
+                <span class="estrella-voto" onclick="asignarVotoEstrellas(3)">★</span>
+                <span class="estrella-voto" onclick="asignarVotoEstrellas(4)">★</span>
+                <span class="estrella-voto" onclick="asignarVotoEstrellas(5)">★</span>
+            </div>
+
+            <label>Escribe tu reseña sobre el servicio:</label>
+            <textarea id="modal-comentario" rows="3" placeholder="Ej: Llegó puntual a Rahue, solucionó el problema del calefont rápido y cobró lo justo."></textarea>
+            
+            <button class="btn-primario" onclick="guardarCalificacionPro()">Publicar Evaluación</button>
+            <button class="btn-volver" onclick="cerrarModalCalificacion()" style="width:100%; margin-top:10px;">Cancelar</button>
+        </div>
+    </div>
+
     <nav class="nav-inferior">
-        <button class="nav-item activo" id="btn-nav-home" onclick="irA('home')">
-            <span class="nav-icono">🏠</span>Inicio
-        </button>
-        <button class="nav-item" id="btn-nav-reg" onclick="irA('registro-prof')">
-            <span class="nav-icono">🛠️</span>Soy Maestro
-        </button>
-        <button class="nav-item" id="btn-nav-perfil" onclick="irA('perfil')">
-            <span class="nav-icono">👤</span>Mi Perfil
-        </button>
+        <button class="nav-item activo" id="btn-nav-home" onclick="irA('home')"><span class="nav-icono">🏠</span>Inicio</button>
+        <button class="nav-item" id="btn-nav-reg" onclick="irA('registro-prof')"><span class="nav-icono">🛠️</span>Soy Maestro</button>
+        <button class="nav-item" id="btn-nav-perfil" onclick="irA('perfil')"><span class="nav-icono">👤</span>Mi Perfil</button>
     </nav>
 
     <script>
-        // Recuerda colocar tu número de administrador aquí
         const WHATSAPP_ADMINISTRADOR = "569XXXXXXXX"; 
 
+        // Modificamos la base de datos para aceptar un arreglo interno de reseñas reales
         const profesionalesPorDefecto = [
-            { nombre: "Luis Silva", categoria: "Gasfitería", cobertura: "Rahue Alto y Centro", fono: "56912345678", desc: "Instalación de calefonts a gas, reparación de filtraciones urgentes y destapes de alcantarillado.", verificado: true, rating: "4.9 (12 reseñas)", recs: "Recomendado por Junta de Vecinos Rahue II." },
-            { nombre: "Raúl Cárcamo", categoria: "Ductos y Estufas", cobertura: "Francke, Kolbe y Ovejería", fono: "56987654321", desc: "Limpieza certificada de caños, ductos de humo e instalación de estufas a pellet y combustión lenta.", verificado: true, rating: "5.0 (8 reseñas)", recs: "Comprobado con boleta de servicio técnico." },
-            { nombre: "Andrés Muñoz", categoria: "Electricistas", cobertura: "Todo Osorno, Pilauco", fono: "56955554444", desc: "Técnico certificado SEC. Reparación de cortocircuitos, tableros eléctricos, focos y enchufes.", verificado: false, rating: "Nuevo miembro", recs: "Pendiente validación de antecedentes." }
+            { 
+                nombre: "Luis Silva", categoria: "Gasfitería", cobertura: "Rahue Alto y Centro", fono: "56912345678", 
+                desc: "Instalación de calefonts a gas, reparación de filtraciones urgentes y destapes de alcantarillado.", 
+                verificado: true, 
+                reseñas: [
+                    { autor: "Carlos M.", sector: "Centro", estrellas: 5, texto: "Excelente disposición, vino rápido un sábado por una filtración." },
+                    { autor: "Ana G.", sector: "Rahue Alto", estrellas: 4, texto: "Buen trabajo instalando el termo, recomendado." }
+                ]
+            },
+            { 
+                nombre: "Raúl Cárcamo", categoria: "Ductos y Estufas", cobertura: "Francke, Kolbe y Ovejería", fono: "56987654321", 
+                desc: "Limpieza certificada de caños, ductos de humo e instalación de estufas a pellet y combustión lenta.", 
+                verificado: true, 
+                reseñas: [
+                    { autor: "Juan P.", sector: "Francke", estrellas: 5, texto: "Dejó el caño impecable para pasar el invierno sin sustos. Muy limpio." }
+                ]
+            },
+            { 
+                nombre: "Andrés Muñoz", categoria: "Electricistas", cobertura: "Todo Osorno, Pilauco", fono: "56955554444", 
+                desc: "Técnico certificado SEC. Reparación de cortocircuitos, tableros eléctricos, focos y enchufes.", 
+                verificado: false, 
+                reseñas: [] 
+            }
         ];
 
         if (!localStorage.getItem('maestros')) {
             localStorage.setItem('maestros', JSON.stringify(profesionalesPorDefecto));
         }
+
+        let maestroSeleccionadoParaEvaluar = null;
+        let votoEstrellasSeleccionado = 0;
 
         function irA(pantallaId) {
             document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
@@ -264,8 +311,6 @@
             document.getElementById('pantalla-' + pantallaId).classList.add('activa');
             const btn = document.getElementById('btn-nav-' + (pantallaId === 'lista' ? 'home' : pantallaId === 'registro-prof' ? 'reg' : pantallaId));
             if(btn) btn.classList.add('activo');
-            
-            // Si volvemos al home, limpiar el buscador
             if(pantallaId === 'home') {
                 document.getElementById('input-buscar').value = "";
                 document.getElementById('select-filtro-sector').value = "";
@@ -289,14 +334,104 @@
             }
         }
 
-        // NUEVO: Algoritmo de Búsqueda Inteligente Global y Filtrado por Barrio de Osorno
+        // Función auxiliar para calcular el promedio y construir la visualización de estrellas
+        function obtenerRatingVisual(maestro) {
+            if(!maestro.reseñas || maestro.reseñas.length === 0) return "⭐ Nuevo (Sin reseñas)";
+            const suma = maestro.reseñas.reduce((acc, r) => acc + r.estrellas, 0);
+            const promedio = (suma / maestro.reseñas.length).toFixed(1);
+            return `⭐ ${promedio} (${maestro.reseñas.length} ${maestro.reseñas.length === 1 ? 'reseña' : 'reseñas'})`;
+        }
+
+        function generarBloqueComentariosHTML(maestro) {
+            if(!maestro.reseñas || maestro.reseñas.length === 0) return "";
+            let html = `<div class="contenedor-comentarios"><strong>Opiniones de vecinos:</strong>`;
+            maestro.reseñas.forEach(r => {
+                html += `
+                    <div class="item-comentario">
+                        <b style="color:var(--azul-premium);">${r.autor}</b> <span style="color:#64748b;">(${r.sector})</span> - <span style="color:var(--amarillo-estrella);">★ ${r.estrellas}</span>
+                        <div style="margin-top:2px; color:#475569;">"${r.texto}"</div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            return html;
+        }
+
+        function abrirModalCalificacion(nombreMaestro) {
+            const cliente = JSON.parse(localStorage.getItem('cliente'));
+            if(!cliente) {
+                alert("Debes ir a la pestaña 'Mi Perfil' e ingresar tu nombre de vecino antes de evaluar a un profesional.");
+                irA('perfil');
+                return;
+            }
+            maestroSeleccionadoParaEvaluar = nombreMaestro;
+            document.getElementById('modal-titulo-maestro').innerText = `Calificar a ${nombreMaestro}`;
+            document.getElementById('modal-comentario').value = "";
+            asignarVotoEstrellas(0);
+            document.getElementById('modal-calificacion').classList.add('activa');
+        }
+
+        function cerrarModalCalificacion() {
+            document.getElementById('modal-calificacion').classList.remove('activa');
+        }
+
+        function asignarVotoEstrellas(voto) {
+            votoEstrellasSeleccionado = voto;
+            const estrellas = document.querySelectorAll('.estrella-voto');
+            estrellas.forEach((est, index) => {
+                if(index < voto) {
+                    est.classList.add('marcada');
+                } else {
+                    est.classList.remove('marcada');
+                }
+            });
+        }
+
+        function guardarCalificacionPro() {
+            if(votoEstrellasSeleccionado === 0) {
+                alert("Por favor, marca al menos 1 estrella.");
+                return;
+            }
+            const comentarioText = document.getElementById('modal-comentario').value.trim();
+            if(comentarioText === "") {
+                alert("Por favor, escribe un breve comentario sobre el servicio.");
+                return;
+            }
+
+            const cliente = JSON.parse(localStorage.getItem('cliente'));
+            const maestros = JSON.parse(localStorage.getItem('maestros'));
+            
+            const indice = maestros.findIndex(m => m.nombre === maestroSeleccionadoParaEvaluar);
+            if(indice !== -1) {
+                if(!maestros[indice].reseñas) maestros[indice].reseñas = [];
+                
+                maestros[indice].reseñas.push({
+                    autor: cliente.nombre,
+                    sector: cliente.sector,
+                    estrellas: votoEstrellasSeleccionado,
+                    texto: comentarioText
+                });
+
+                localStorage.setItem('maestros', JSON.stringify(maestros));
+                alert("¡Muchas gracias! Tu opinión ayuda a la comunidad de Osorno.");
+                cerrarModalCalificacion();
+                
+                // Refrescar pantalla actual
+                const inputBuscar = document.getElementById('input-buscar').value;
+                if(inputBuscar !== "" || document.getElementById('select-filtro-sector').value !== "") {
+                    filtrarBusquedaGlobal();
+                } else {
+                    verCategoria(maestros[indice].categoria);
+                }
+            }
+        }
+
         function filtrarBusquedaGlobal() {
             const textoBusqueda = document.getElementById('input-buscar').value.toLowerCase().trim();
             const sectorSeleccionado = document.getElementById('select-filtro-sector').value.toLowerCase();
             const bloqueResultados = document.getElementById('resultados-busqueda-directa');
             const contenedorLista = document.getElementById('lista-resultados-globales');
             
-            // Si el buscador y el filtro están vacíos, ocultar resultados y mostrar categorías normales
             if (textoBusqueda === "" && sectorSeleccionado === "") {
                 bloqueResultados.style.display = "none";
                 return;
@@ -307,25 +442,20 @@
 
             const maestros = JSON.parse(localStorage.getItem('maestros'));
 
-            // Filtrar inteligentemente comparando texto y zona geográfica
             const filtrados = maestros.filter(m => {
                 const cumpleTexto = textoBusqueda === "" || 
                                     m.nombre.toLowerCase().includes(textoBusqueda) || 
                                     m.categoria.toLowerCase().includes(textoBusqueda) || 
                                     m.desc.toLowerCase().includes(textoBusqueda);
-                                    
-                const cumpleSector = sectorSeleccionado === "" || 
-                                     m.cobertura.toLowerCase().includes(sectorSeleccionado);
-
+                const cumpleSector = sectorSeleccionado === "" || m.cobertura.toLowerCase().includes(sectorSeleccionado);
                 return cumpleTexto && cumpleSector;
             });
 
             if (filtrados.length === 0) {
-                contenedorLista.innerHTML = "<p style='color:#64748b; font-size:14px; font-style:italic;'>No se encontraron técnicos que coincidan con tu búsqueda en ese sector.</p>";
+                contenedorLista.innerHTML = "<p style='color:#64748b; font-size:14px; font-style:italic;'>No se encontraron resultados.</p>";
                 return;
             }
 
-            // Renderizar las tarjetas resultantes en tiempo real
             filtrados.forEach(m => {
                 const iniciales = m.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
                 contenedorLista.innerHTML += `
@@ -334,7 +464,7 @@
                             <div class="avatar-iniciales">${iniciales}</div>
                             <div class="prof-info-principal">
                                 <div class="prof-nombre">${m.nombre} <span style="font-size:12px; font-weight:normal; color:#64748b;">(${m.categoria})</span></div>
-                                <div class="rating">⭐ ${m.rating}</div>
+                                <div class="rating">${obtenerRatingVisual(m)}</div>
                             </div>
                             <div>
                                 ${m.verificado ? '<span class="badge badge-v">✅ Verificado</span>' : '<span class="badge badge-p">⏳ Pendiente</span>'}
@@ -342,7 +472,48 @@
                         </div>
                         <div class="cobertura-tag">📍 Cobertura: ${m.cobertura}</div>
                         <div class="prof-desc">${m.desc}</div>
+                        ${generarBloqueComentariosHTML(m)}
+                        <button class="btn-evaluar" onclick="abrirModalCalificacion('${m.nombre}')">📝 Dejar Reseña como Vecino</button>
                         <a class="btn-whatsapp" href="https://wa.me/${m.fono}?text=Hola%20${encodeURIComponent(m.nombre)},%20vi%20tu%20perfil%20en%20Osorno%20Servicios." target="_blank">
+                            <span>💬</span> Contactar por WhatsApp
+                        </a>
+                    </div>
+                `;
+            });
+        }
+
+        function verCategoria(cat) {
+            irA('lista');
+            document.getElementById('titulo-cat').innerText = "Especialistas en " + cat;
+            const maestros = JSON.parse(localStorage.getItem('maestros'));
+            const filtrados = maestros.filter(m => m.categoria === cat);
+            const contenedor = document.getElementById('lista-maestros');
+            contenedor.innerHTML = "";
+
+            if(filtrados.length === 0) {
+                contenedor.innerHTML = "<p class='intro' style='margin-top:30px;'>No hay técnicos inscritos actualmente en esta categoría.</p>";
+                return;
+            }
+
+            filtrados.forEach(m => {
+                const iniciales = m.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                contenedor.innerHTML += `
+                    <div class="card-profesional" style="border-left: 5px solid ${m.verificado ? 'var(--verde-wa)' : '#cbd5e1'}">
+                        <div class="prof-bloque-superior">
+                            <div class="avatar-iniciales">${iniciales}</div>
+                            <div class="prof-info-principal">
+                                <div class="prof-nombre">${m.nombre}</div>
+                                <div class="rating">${obtenerRatingVisual(m)}</div>
+                            </div>
+                            <div>
+                                ${m.verificado ? '<span class="badge badge-v">✅ Verificado</span>' : '<span class="badge badge-p">⏳ Pendiente</span>'}
+                            </div>
+                        </div>
+                        <div class="cobertura-tag">📍 Cobertura: ${m.cobertura}</div>
+                        <div class="prof-desc">${m.desc}</div>
+                        ${generarBloqueComentariosHTML(m)}
+                        <button class="btn-evaluar" onclick="abrirModalCalificacion('${m.nombre}')">📝 Dejar Reseña como Vecino</button>
+                        <a class="btn-whatsapp" href="https://wa.me/${m.fono}?text=Hola%20${encodeURIComponent(m.nombre)},%20vi%20tu%20perfil%20en%20Osorno%20Servicios%20y%20necesito%20una%20consulta." target="_blank">
                             <span>💬</span> Contactar por WhatsApp
                         </a>
                     </div>
@@ -361,53 +532,9 @@
             irA('home');
         }
 
-        function cerrarSesion() {
-            localStorage.removeItem('cliente');
-            actualizarCabecera();
-        }
-
-        function verCategoria(cat) {
-            irA('lista');
-            document.getElementById('titulo-cat').innerText = "Especialistas en " + cat;
-            const maestros = JSON.parse(localStorage.getItem('maestros'));
-            const filtrados = maestros.filter(m => m.categoria === cat);
-            const contenedor = document.getElementById('lista-maestros');
-            contenedor.innerHTML = "";
-
-            if(filtrados.length === 0) {
-                contenedor.innerHTML = "<p class='intro' style='margin-top:30px;'>No hay técnicos inscritos actualmente en esta categoría en Osorno.</p>";
-                return;
-            }
-
-            filtrados.forEach(m => {
-                const iniciales = m.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                contenedor.innerHTML += `
-                    <div class="card-profesional" style="border-left: 5px solid ${m.verificado ? 'var(--verde-wa)' : '#cbd5e1'}">
-                        <div class="prof-bloque-superior">
-                            <div class="avatar-iniciales">${iniciales}</div>
-                            <div class="prof-info-principal">
-                                <div class="prof-nombre">${m.nombre}</div>
-                                <div class="rating">⭐ ${m.rating}</div>
-                            </div>
-                            <div>
-                                ${m.verificado ? '<span class="badge badge-v">✅ Verificado</span>' : '<span class="badge badge-p">⏳ Pendiente</span>'}
-                            </div>
-                        </div>
-                        <div class="cobertura-tag">📍 Cobertura: ${m.cobertura}</div>
-                        <div class="prof-desc">${m.desc}</div>
-                        <p style="font-size:12px; color:#64748b; margin:6px 0; background:#f8fafc; padding:6px; border-radius:6px;"><b>Origen:</b> ${m.recs}</p>
-                        <a class="btn-whatsapp" href="https://wa.me/${m.fono}?text=Hola%20${encodeURIComponent(m.nombre)},%20vi%20tu%20perfil%20en%20Osorno%20Servicios%20y%20necesito%20una%20consulta." target="_blank">
-                            <span>💬</span> Contactar por WhatsApp
-                        </a>
-                    </div>
-                `;
-            });
-        }
-
         function registrarProfesional(e) {
             e.preventDefault();
             const maestros = JSON.parse(localStorage.getItem('maestros'));
-            
             const nombre = document.getElementById('p-nombre').value;
             const cat = document.getElementById('p-cat').value;
             const cobertura = document.getElementById('p-cobertura').value;
@@ -415,27 +542,21 @@
             const desc = document.getElementById('p-desc').value;
 
             const nuevo = {
-                nombre: nombre,
-                categoria: cat,
-                cobertura: cobertura,
-                fono: fono,
-                desc: desc,
-                verificado: false,
-                rating: "Nuevo postulante",
-                recs: "Esperando envío de certificado de antecedentes para verificación."
+                nombre: nombre, categoria: cat, cobertura: cobertura, fono: fono, desc: desc,
+                verificado: false, reseñas: []
             };
 
             maestros.push(nuevo);
             localStorage.setItem('maestros', JSON.stringify(maestros));
             
-            const mensajeAdmin = `Hola, acabo de postular a Osorno Servicios.\n\n*Datos de mi perfil:*\n• Nombre: ${nombre}\n• Rubro: ${cat}\n• Cobertura: ${cobertura}\n• Fono: ${fono}\n\nQuedo atento para enviar mi Certificado de Antecedentes para activar la cuenta.`;
-            
-            alert("¡Datos guardados! Ahora se abrirá tu WhatsApp para enviarle la confirmación y tus documentos al administrador del sistema de Osorno.");
+            const mensajeAdmin = `Hola, acabo de postular a Osorno Servicios.\n\n*Datos de mi perfil:*\n• Nombre: ${nombre}\n• Rubro: ${cat}\n• Cobertura: ${cobertura}\n• Fono: ${fono}`;
+            alert("¡Datos guardados! Ahora se abrirá tu WhatsApp para enviar la información al administrador.");
             window.open(`https://wa.me/${WHATSAPP_ADMINISTRADOR}?text=${encodeURIComponent(mensajeAdmin)}`, '_blank');
-            
             document.getElementById('form-prof').reset();
             irA('home');
         }
+
+        function cerrarSesion() { localStorage.removeItem('cliente'); actualizarCabecera(); }
 
         actualizarCabecera();
     </script>
