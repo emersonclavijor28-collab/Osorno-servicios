@@ -5,21 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Osorno Servicios</title>
     <style>
+        /* Variables de Diseño Core (Modo Claro por Defecto) */
         :root { 
             --azul-premium: #0f172a; 
             --celeste-accent: #2563eb; 
             --verde-wa: #22c55e; 
             --gris-fondo: #f8fafc;
             --texto-dark: #334155;
+            --texto-suave: #64748b;
+            --borde: #e2e8f0;
+            --blanco-card: #ffffff;
             --amarillo-estrella: #eab308;
             --rojo-emergencia: #dc2626;
+            --bg-emergencia: linear-gradient(135deg, #fee2e2, #fecaca);
+            --borde-emergencia: #fca5a5;
+            --texto-emergencia: #7f1d1d;
+            --icon-color: #475569;
         }
         
+        /* Paleta de Colores Inteligente: Modo Oscuro Automático */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --azul-premium: #f8fafc;
+                --celeste-accent: #3b82f6;
+                --gris-fondo: #0f172a;
+                --texto-dark: #cbd5e1;
+                --texto-suave: #94a3b8;
+                --borde: #334155;
+                --blanco-card: #1e293b;
+                --bg-emergencia: linear-gradient(135deg, #451a03, #7f1d1d);
+                --borde-emergencia: #b91c1c;
+                --texto-emergencia: #fef2f2;
+                --icon-color: #94a3b8;
+            }
+        }
+
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             margin: 0; padding: 0; 
             background-color: var(--gris-fondo); 
-            color: var(--texto-dark); 
+            color: var(--texto-dark);
+            transition: background-color 0.3s, color 0.3s;
         }
 
         header { 
@@ -36,52 +62,58 @@
 
         .container { padding: 15px; max-width: 500px; margin: 0 auto; padding-bottom: 90px; }
         .pantalla { display: none; }
-        .pantalla.activa { display: block; animation: fadeIn 0.3s ease-in-out; }
+        .pantalla.activa { display: block; animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .bloque-busqueda {
-            background: white; padding: 16px; border-radius: 16px;
+            background: var(--blanco-card); padding: 16px; border-radius: 16px;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); margin-bottom: 15px;
-            border: 1px solid #f1f5f9;
+            border: 1px solid var(--borde);
         }
         .input-buscador {
-            width: 100%; padding: 12px 14px 12px 40px; border: 1px solid #cbd5e1;
+            width: 100%; padding: 12px 14px 12px 40px; border: 1px solid var(--borde);
             border-radius: 10px; font-size: 14px; box-sizing: border-box;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>') no-repeat 14px center;
-            background-color: #f8fafc;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%2364748b" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>') no-repeat 14px center;
+            background-color: var(--gris-fondo);
+            color: var(--texto-dark);
         }
         .select-sector {
-            width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #cbd5e1;
-            border-radius: 10px; font-size: 13px; font-weight: 600; color: #475569;
+            width: 100%; padding: 10px; margin-top: 10px; border: 1px solid var(--borde);
+            border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--texto-dark);
+            background-color: var(--blanco-card);
         }
 
-        /* Banner de Emergencia */
+        /* Banner de Emergencia Rediseñado */
         .banner-emergencia {
-            background: linear-gradient(135deg, #fee2e2, #fecaca);
-            border: 1px solid #fca5a5; border-radius: 16px; padding: 14px;
+            background: var(--bg-emergencia);
+            border: 1px solid var(--borde-emergencia); border-radius: 16px; padding: 14px;
             margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;
-            cursor: pointer; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.05);
+            cursor: pointer; transition: transform 0.2s;
         }
+        .banner-emergencia:active { transform: scale(0.98); }
         .banner-emergencia-texto h4 { margin: 0; color: var(--rojo-emergencia); font-size: 15px; font-weight: 800; }
-        .banner-emergencia-texto p { margin: 3px 0 0 0; color: #7f1d1d; font-size: 12px; font-weight: 500; }
-        .btn-banner-rojo { background: var(--rojo-emergencia); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; }
+        .banner-emergencia-texto p { margin: 3px 0 0 0; color: var(--texto-emergencia); font-size: 12px; font-weight: 500; }
+        .btn-banner-rojo { background: var(--rojo-emergencia); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; }
         
+        /* Grid de Categorías con Iconos Premium */
         .grid-categorias { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
         .card-categoria { 
-            background: white; border: none; padding: 22px 12px; border-radius: 16px; 
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); text-align: center; cursor: pointer;
-            font-weight: 700; color: #1e293b; border: 1px solid #f1f5f9;
+            background: var(--blanco-card); border: 1px solid var(--borde); padding: 20px 12px; border-radius: 16px; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.01); text-align: center; cursor: pointer;
+            font-weight: 700; color: var(--azul-premium); transition: transform 0.2s, box-shadow 0.2s;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
         }
-        .card-categoria .icono { font-size: 34px; display: block; margin-bottom: 8px; }
+        .card-categoria:active { transform: scale(0.96); background-color: var(--gris-fondo); }
+        .card-categoria svg { width: 32px; height: 32px; fill: var(--celeste-accent); }
 
-        label { display: block; margin: 14px 0 6px; font-weight: 600; font-size: 14px; color: #1e293b; }
+        label { display: block; margin: 14px 0 6px; font-weight: 600; font-size: 14px; color: var(--azul-premium); }
         input, select, textarea { 
-            width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; 
-            box-sizing: border-box; font-size: 14px; background: #fff;
+            width: 100%; padding: 12px; border: 1px solid var(--borde); border-radius: 10px; 
+            box-sizing: border-box; font-size: 14px; background: var(--blanco-card); color: var(--texto-dark);
         }
         .checkbox-label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; margin-top: 10px; cursor: pointer; }
         .checkbox-label input { width: auto; margin: 0; transform: scale(1.2); }
@@ -89,17 +121,23 @@
         .btn-primario { 
             background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none; 
             padding: 14px; width: 100%; border-radius: 10px; font-weight: 700; cursor: pointer; 
-            font-size: 15px; margin-top: 20px; box-shadow: 0 4px 10px rgba(37,99,235,0.2);
+            font-size: 15px; margin-top: 20px; transition: transform 0.1s;
         }
+        .btn-primario:active { transform: scale(0.98); }
         .btn-volver { 
-            background: #e2e8f0; border: none; padding: 10px 14px; border-radius: 8px; 
-            font-weight: 600; color: #475569; cursor: pointer; margin-bottom: 15px;
+            background: var(--borde); border: none; padding: 10px 14px; border-radius: 8px; 
+            font-weight: 600; color: var(--texto-dark); cursor: pointer; margin-bottom: 15px;
         }
 
-        /* Tarjetas de Profesionales */
+        /* Tarjetas de Profesionales Estilizadas */
         .card-profesional { 
-            background: white; border-radius: 16px; padding: 16px; margin-bottom: 16px; 
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); border: 1px solid #f1f5f9;
+            background: var(--blanco-card); border-radius: 16px; padding: 16px; margin-bottom: 16px; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); border: 1px solid var(--borde);
+            animation: slideUp 0.4s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .prof-bloque-superior { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
         
@@ -109,50 +147,50 @@
             font-weight: 700; font-size: 16px; flex-shrink: 0;
         }
         .prof-info-principal { flex-grow: 1; }
-        .prof-nombre { font-size: 17px; font-weight: 700; color: #0f172a; margin: 0; }
+        .prof-nombre { font-size: 17px; font-weight: 700; color: var(--azul-premium); margin: 0; }
         
         .badge { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 700; display: inline-block; }
         .badge-v { background: #d1fae5; color: #065f46; }
-        .badge-p { background: #f1f5f9; color: #64748b; }
+        .badge-p { background: var(--gris-fondo); color: var(--texto-suave); }
         .badge-247 { background: #fee2e2; color: #b91c1c; animation: pulseRed 2s infinite; }
 
         @keyframes pulseRed {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+            100% { transform: scale(1); }
         }
         
         .rating { color: #ea580c; font-weight: 700; font-size: 13px; margin-top: 2px; }
         .cobertura-tag { font-size: 12px; color: var(--celeste-accent); font-weight: 600; margin: 6px 0; }
-        .prof-desc { font-size: 14px; color: #475569; line-height: 1.4; margin: 8px 0; }
+        .prof-desc { font-size: 14px; color: var(--texto-dark); line-height: 1.4; margin: 8px 0; }
         
         .btn-whatsapp { 
             background: var(--verde-wa); color: white; text-decoration: none; display: flex; 
             justify-content: center; align-items: center; gap: 8px; padding: 12px; border-radius: 10px; 
             font-weight: 700; margin-top: 12px; box-shadow: 0 4px 8px rgba(34,197,94,0.15);
+            transition: transform 0.1s;
         }
+        .btn-whatsapp:active { transform: scale(0.98); }
 
         .btn-evaluar {
-            background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; display: block;
+            background: var(--gris-fondo); color: var(--texto-dark); border: 1px solid var(--borde); display: block;
             text-align: center; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 700;
             margin-top: 10px; cursor: pointer; text-decoration: none; width: 100%; box-sizing: border-box;
         }
 
-        /* Historial de Reseñas en tarjeta */
         .contenedor-comentarios {
-            background: #f8fafc; border-radius: 10px; padding: 10px; margin-top: 10px; font-size: 12px;
-            border: 1px solid #e2e8f0;
+            background: var(--gris-fondo); border-radius: 10px; padding: 10px; margin-top: 10px; font-size: 12px;
+            border: 1px solid var(--borde); color: var(--texto-dark);
         }
-        .item-comentario { border-bottom: 1px dashed #e2e8f0; padding: 6px 0; }
+        .item-comentario { border-bottom: 1px dashed var(--borde); padding: 6px 0; }
         .item-comentario:last-child { border: none; }
 
-        /* Módulo de Teléfonos de Utilidad Pública */
         .grid-utilidad { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
-        .card-utilidad { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: center; text-decoration: none; color: inherit; }
+        .card-utilidad { background: var(--blanco-card); border: 1px solid var(--borde); border-radius: 12px; padding: 12px; text-align: center; text-decoration: none; color: inherit; }
         .card-utilidad h5 { margin: 0 0 4px 0; font-size: 13px; color: var(--azul-premium); font-weight: 700; }
         .card-utilidad span { font-size: 14px; color: var(--rojo-emergencia); font-weight: 800; display: block; }
 
-        /* Ventana Modal Flotante */
+        /* Modal */
         .modal {
             display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
@@ -160,22 +198,22 @@
         }
         .modal.activa { display: flex; }
         .modal-contenido {
-            background: white; width: 100%; max-width: 400px; padding: 20px;
-            border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            background: var(--blanco-card); width: 100%; max-width: 400px; padding: 20px;
+            border-radius: 16px; border: 1px solid var(--borde);
         }
         .estrellas-selector { display: flex; gap: 10px; font-size: 32px; margin: 12px 0; cursor: pointer; }
-        .estrella-voto { color: #cbd5e1; transition: color 0.1s; }
+        .estrella-voto { color: var(--borde); transition: color 0.1s; }
         .estrella-voto.marcada { color: var(--amarillo-estrella); }
 
-        /* Barra Inferior */
+        /* Barra Inferior Premium */
         .nav-inferior { 
-            position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.92); 
-            backdrop-filter: blur(8px); display: flex; justify-content: space-around; padding: 12px 0 20px; 
-            box-shadow: 0 -4px 12px rgba(0,0,0,0.03); border-top: 1px solid #f1f5f9; z-index: 90;
+            position: fixed; bottom: 0; left: 0; right: 0; background: var(--blanco-card); 
+            border-top: 1px solid var(--borde); display: flex; justify-content: space-around; padding: 12px 0 20px; 
+            z-index: 90; transition: background-color 0.3s;
         }
-        .nav-item { background: none; border: none; color: #94a3b8; font-size: 11px; cursor: pointer; text-align: center; }
+        .nav-item { background: none; border: none; color: var(--texto-suave); font-size: 11px; cursor: pointer; text-align: center; }
         .nav-item.activo { color: var(--celeste-accent); font-weight: 700; }
-        .nav-item .nav-icono { font-size: 22px; display: block; margin-bottom: 2px; }
+        .nav-item .nav-icono { font-size: 20px; display: block; margin-bottom: 4px; }
     </style>
 </head>
 <body>
@@ -185,6 +223,7 @@
     
     <div class="container">
 
+        <!-- PANTALLA 1: HOME -->
         <div id="pantalla-home" class="pantalla activa">
             <div class="banner-emergencia" onclick="verEmergencias()">
                 <div class="banner-emergencia-texto">
@@ -195,7 +234,7 @@
             </div>
 
             <div class="bloque-busqueda">
-                <input type="text" id="input-buscar" class="input-buscador" placeholder="¿Qué buscas? Ej: calefont, caño, cables..." oninput="filtrarBusquedaGlobal()" onkeydown="if(event.key==='Enter') event.preventDefault();">
+                <input type="text" id="input-buscar" class="input-buscador" placeholder="¿Qué buscas? Ej: calefont, caño, cables..." oninput="filtrarBusquedaGlobal()">
                 <select id="select-filtro-sector" class="select-sector" onchange="filtrarBusquedaGlobal()">
                     <option value="">🗺️ Ver todos los sectores de Osorno</option>
                     <option value="Rahue">Rahue (Alto / Bajo / II)</option>
@@ -209,26 +248,51 @@
             <div id="resultados-busqueda-directa" style="display:none; margin-bottom:20px;">
                 <h3 style="font-size:16px; margin-top:0; color:var(--azul-premium);">Resultados encontrados:</h3>
                 <div id="lista-resultados-globales"></div>
-                <hr style="border:0; border-top: 1px dashed #cbd5e1; margin: 20px 0;">
-                <h3 style="font-size:15px; color:#64748b;">O navega por categorías:</h3>
+                <hr style="border:0; border-top: 1px dashed var(--borde); margin: 20px 0;">
+                <h3 style="font-size:15px; color:var(--texto-suave);">O navega por categorías:</h3>
             </div>
 
             <div class="grid-categorias" id="contenedor-categorias-home">
-                <button class="card-categoria" onclick="verCategoria('Gasfitería')"><span class="icono">🚰</span>Gasfitería</button>
-                <button class="card-categoria" onclick="verCategoria('Electricistas')"><span class="icono">⚡</span>Electricistas</button>
-                <button class="card-categoria" onclick="verCategoria('Construcción')"><span class="icono">🧱</span>Construcción</button>
-                <button class="card-categoria" onclick="verCategoria('Ductos y Estufas')"><span class="icono">🔥</span>Limpia Caños</button>
-                <button class="card-categoria" onclick="verCategoria('Línea Blanca')"><span class="icono">❄️</span>Línea Blanca</button>
-                <button class="card-categoria" onclick="verCategoria('Jardinería')"><span class="icono">🌱</span>Jardinería</button>
+                <!-- Gasfitería (Icono Llave Inglesa SVG) -->
+                <button class="card-categoria" onclick="verCategoria('Gasfitería')">
+                    <svg viewBox="0 0 24 24"><path d="M19.34 16.14l-2.4-2.4c.54-.86.86-1.88.86-2.98 0-3.03-2.47-5.5-5.5-5.5-.32 0-.64.03-.95.08L13.5 7.5l-2 2-2.16-2.16-2.66 2.66 2.16 2.16-2 2-2.16-2.16-.08.95c0 3.03 2.47 5.5 5.5 5.5 1.1 0 2.12-.32 2.98-.86l2.4 2.4c.59.59 1.54.59 2.12 0l1.42-1.42c.59-.58.59-1.53 0-2.12z"/></svg>
+                    Gasfitería
+                </button>
+                <!-- Electricistas (Icono Rayo SVG) -->
+                <button class="card-categoria" onclick="verCategoria('Electricistas')">
+                    <svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+                    Electricistas
+                </button>
+                <!-- Construcción (Icono Pared/Ladrillos SVG) -->
+                <button class="card-categoria" onclick="verCategoria('Construcción')">
+                    <svg viewBox="0 0 24 24"><path d="M19 4H5c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-9 14H5v-3h5v3zm0-4.5H5v-3h5v3zm0-4.5H5V6h5v3zm9 9h-7.5v-3H19v3zm0-4.5h-7.5v-3H19v3zm0-4.5h-7.5V6H19v3z"/></svg>
+                    Construcción
+                </button>
+                <!-- Limpia Caños (Icono Fuego/Calor SVG) -->
+                <button class="card-categoria" onclick="verCategoria('Ductos y Estufas')">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.69c-5.14 0-9.31 4.17-9.31 9.31 0 3.48 1.91 6.5 4.75 8.12.28.16.63-.04.63-.37V17c0-2.76 2.24-5 5-5h.69c1.82 0 3.31-1.49 3.31-3.31V8c0-2.93-2.36-5.31-5.31-5.31zM17.47 18.3c1.39-1.74 2.22-3.92 2.22-6.3 0-5.69-4.62-10.31-10.31-10.31S-.93 6.31-.93 12c0 3.51 1.76 6.62 4.47 8.5.34.23.8-.02.8-.43v-2.25c0-1.66 1.34-3 3-3h2c2.76 0 5-2.24 5-5v-.5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5c0 2.44-1.2 4.6-3.04 5.92-.31.22-.38.66-.16.97.22.31.66.38.97.16z"/></svg>
+                    Limpia Caños
+                </button>
+                <!-- Línea Blanca (Icono Copo de Nieve SVG) -->
+                <button class="card-categoria" onclick="verCategoria('Línea Blanca')">
+                    <svg viewBox="0 0 24 24"><path d="M22 11h-4.17l3.24-3.24-1.41-1.41L15 11h-2V9l4.66-4.66-1.41-1.41L13 6.17V2h-2v4.17L7.76 2.93 6.34 4.34 11 9v2H9L4.34 6.34 2.93 7.76 6.17 11H2v2h4.17l-3.24 3.24 1.41 1.41L11 13v2l-4.66 4.66 1.41 1.41L11 17.83V22h2v-4.17l3.24 3.24 1.41-1.41L13 15v-2h2l4.66 4.66 1.41-1.41L17.83 13H22v-2z"/></svg>
+                    Línea Blanca
+                </button>
+                <!-- Jardinería (Icono Planta/Brote SVG) -->
+                <button class="card-categoria" onclick="verCategoria('Jardinería')">
+                    <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.17 19.53 10.53 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+                    Jardinería
+                </button>
             </div>
         </div>
 
+        <!-- PANTALLA 2: LISTA GENERAL -->
         <div id="pantalla-lista" class="pantalla">
             <button class="btn-volver" onclick="irA('home')">← Volver al Inicio</button>
             <h2 id="titulo-cat" style="font-size: 20px; margin-top: 0; color:var(--azul-premium);"></h2>
             
             <div id="bloque-telefonos-publicos" style="display:none;">
-                <h4 style="margin: 0 0 10px 0; color:#475569; font-size:14px;">Asistencia Comunal Osorno:</h4>
+                <h4 style="margin: 0 0 10px 0; color:var(--texto-suave); font-size:14px;">Asistencia Comunal Osorno:</h4>
                 <div class="grid-utilidad">
                     <a href="tel:132" class="card-utilidad"><h5>🚒 Bomberos</h5><span>132</span></a>
                     <a href="tel:131" class="card-utilidad"><h5>🚑 SAMU</h5><span>131</span></a>
@@ -241,6 +305,7 @@
             <div id="lista-maestros"></div>
         </div>
 
+        <!-- PANTALLA 3: REGISTRO MAESTRO -->
         <div id="pantalla-registro-prof" class="pantalla">
             <h2 style="margin-top:0;">Registro de Profesionales</h2>
             <form id="form-prof" onsubmit="registrarProfesional(event)">
@@ -268,10 +333,11 @@
             </form>
         </div>
 
+        <!-- PANTALLA 4: PERFIL CLIENTE -->
         <div id="pantalla-perfil" class="pantalla">
             <h2 style="margin-top:0;">Perfil de Usuario</h2>
             <div id="bloque-registro-cliente">
-                <p class="intro">Regístrate como vecino para calificar a los maestros locales de la comuna.</p>
+                <p style="color: var(--texto-suave); font-size:14px;">Regístrate como vecino para calificar a los maestros locales de la comuna.</p>
                 <form id="form-cliente" onsubmit="registrarCliente(event)">
                     <label>Tu Nombre</label>
                     <input type="text" id="c-nombre" required placeholder="Ej: María José">
@@ -280,7 +346,7 @@
                     <button type="submit" class="btn-primario">Crear Cuenta</button>
                 </form>
             </div>
-            <div id="bloque-perfil-activo" style="display:none; background:white; padding:20px; border-radius:16px; border:1px solid #f1f5f9;">
+            <div id="bloque-perfil-activo" style="display:none; background:var(--blanco-card); padding:20px; border-radius:16px; border:1px solid var(--borde);">
                 <h3>¡Hola, <span id="user-nombre" style="color:var(--celeste-accent);"></span>!</h3>
                 <p>📍 <b>Sector residencial:</b> <span id="user-sector"></span></p>
                 <button class="btn-volver" onclick="cerrarSesion()" style="background:#fee2e2; color:#991b1b; width:100%; border:none; padding:12px; margin-top:15px; border-radius:10px; font-weight:700;">Cerrar Sesión</button>
@@ -289,10 +355,11 @@
 
     </div>
 
+    <!-- Modal Calificación -->
     <div id="modal-calificacion" class="modal">
         <div class="modal-contenido">
             <h3 style="margin-top:0; color:var(--azul-premium);" id="modal-titulo-maestro">Calificar Maestro</h3>
-            <p style="font-size:13px; color:#64748b; margin-bottom:10px;">Selecciona el nivel de satisfacción:</p>
+            <p style="font-size:13px; color:var(--texto-suave); margin-bottom:10px;">Selecciona el nivel de satisfacción:</p>
             
             <div class="estrellas-selector">
                 <span class="estrella-voto" onclick="asignarVotoEstrellas(1)">★</span>
@@ -303,7 +370,7 @@
             </div>
 
             <label>Escribe tu reseña sobre el servicio:</label>
-            <textarea id="modal-comentario" rows="3" placeholder="Ej: Llegó puntual, solucionó el problema rápido y cobró lo justo."></textarea>
+            <textarea id="modal-comentario" rows="3" placeholder="Ej: Llegó puntual y solucionó el problema rápido."></textarea>
             
             <button class="btn-primario" onclick="guardarCalificacionPro()">Publicar Evaluación</button>
             <button class="btn-volver" onclick="cerrarModalCalificacion()" style="width:100%; margin-top:10px;">Cancelar</button>
@@ -324,27 +391,22 @@
                 nombre: "Luis Silva", categoria: "Gasfitería", cobertura: "Rahue Alto y Centro", fono: "56912345678", 
                 desc: "Instalación de calefonts a gas, reparación de filtraciones urgentes y destapes de alcantarillado.", 
                 verificado: true, emergencia247: true,
-                reseñas: [
-                    { autor: "Carlos M.", sector: "Centro", estrellas: 5, texto: "Excelente disposición, vino rápido un sábado por una filtración." }
-                ]
+                reseñas: [{ autor: "Carlos M.", sector: "Centro", estrellas: 5, texto: "Excelente disposición, vino rápido un sábado por una filtración." }]
             },
             { 
                 nombre: "Raúl Cárcamo", categoria: "Ductos y Estufas", cobertura: "Francke, Kolbe y Ovejería", fono: "56987654321", 
                 desc: "Limpieza certificada de caños, ductos de humo e instalación de estufas a pellet y combustión lenta.", 
                 verificado: true, emergencia247: false,
-                reseñas: [
-                    { autor: "Juan P.", sector: "Francke", estrellas: 5, texto: "Dejó el caño impecable para pasar el invierno sin sustos." }
-                ]
+                reseñas: [{ autor: "Juan P.", sector: "Francke", estrellas: 5, texto: "Dejó el caño impecable para pasar el invierno sin sustos." }]
             },
             { 
                 nombre: "Andrés Muñoz", categoria: "Electricistas", cobertura: "Todo Osorno, Pilauco", fono: "56955554444", 
-                desc: "Técnico certificado SEC. Reparación de cortocircuitos, tableros eléctricos de urgencia, focos y enchufes.", 
+                desc: "Técnico certificado SEC. Reparación de cortocorticuitos y tableros eléctricos de urgencia.", 
                 verificado: false, emergencia247: true,
                 reseñas: [] 
             }
         ];
 
-        // Manejo y actualización de formato en LocalStorage
         try {
             const datosLocales = localStorage.getItem('maestros');
             if (!datosLocales || !datosLocales.includes('"emergencia247"')) {
@@ -356,7 +418,7 @@
 
         let maestroSeleccionadoParaEvaluar = null;
         let votoEstrellasSeleccionado = 0;
-        let modoPantallaActual = ""; // Puede ser una categoría o "emergencia"
+        let modoPantallaActual = ""; 
 
         function irA(pantallaId) {
             document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
@@ -405,8 +467,8 @@
             maestro.reseñas.forEach(r => {
                 html += `
                     <div class="item-comentario">
-                        <b style="color:var(--azul-premium);">${r.autor}</b> <span style="color:#64748b;">(${r.sector})</span> - <span style="color:var(--amarillo-estrella);">★ ${r.estrellas}</span>
-                        <div style="margin-top:2px; color:#475569;">"${r.texto}"</div>
+                        <b style="color:var(--azul-premium);">${r.autor}</b> <span style="color:var(--texto-suave);">(${r.sector})</span> - <span style="color:var(--amarillo-estrella);">★ ${r.estrellas}</span>
+                        <div style="margin-top:2px; color:var(--texto-dark);">"${r.texto}"</div>
                     </div>
                 `;
             });
@@ -446,7 +508,6 @@
 
             const cliente = JSON.parse(localStorage.getItem('cliente'));
             const maestros = JSON.parse(localStorage.getItem('maestros'));
-            
             const indice = maestros.findIndex(m => m.nombre.trim() === maestroSeleccionadoParaEvaluar.trim());
             
             if(indice !== -1) {
@@ -492,7 +553,7 @@
             });
 
             if (filtrados.length === 0) {
-                contenedorLista.innerHTML = "<p style='color:#64748b; font-size:14px; font-style:italic;'>No se encontraron resultados.</p>";
+                contenedorLista.innerHTML = "<p style='color:var(--texto-suave); font-size:14px; font-style:italic;'>No se encontraron resultados.</p>";
                 return;
             }
 
@@ -511,13 +572,12 @@
             contenedor.innerHTML = "";
 
             if(filtrados.length === 0) {
-                contenedor.innerHTML = "<p style='margin-top:20px; font-style:italic; color:#64748b;'>No hay técnicos en esta categoría.</p>";
+                contenedor.innerHTML = "<p style='margin-top:20px; font-style:italic; color:var(--texto-suave);'>No hay técnicos en esta categoría.</p>";
                 return;
             }
             renderizarTarjetas(filtrados, contenedor, "cat");
         }
 
-        // NUEVA FUNCIÓN: Filtrar y mostrar turnos de emergencia 24/7
         function verEmergencias() {
             modoPantallaActual = "emergencia";
             irA('lista');
@@ -530,7 +590,7 @@
             contenedor.innerHTML = "";
 
             if(filtrados.length === 0) {
-                contenedor.innerHTML = "<p style='margin-top:15px; font-style:italic; color:#64748b;'>No hay turnos de emergencia reportados hoy.</p>";
+                contenedor.innerHTML = "<p style='margin-top:15px; font-style:italic; color:var(--texto-suave);'>No hay turnos de emergencia reportados hoy.</p>";
                 return;
             }
             renderizarTarjetas(filtrados, contenedor, "emerg");
@@ -541,13 +601,13 @@
                 const iniciales = m.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
                 const tarjeta = document.createElement('div');
                 tarjeta.className = 'card-profesional';
-                tarjeta.style.borderLeft = m.emergencia247 ? '5px solid var(--rojo-emergencia)' : `5px solid ${m.verificado ? 'var(--verde-wa)' : '#cbd5e1'}`;
+                tarjeta.style.borderLeft = m.emergencia247 ? '5px solid var(--rojo-emergencia)' : `5px solid ${m.verificado ? 'var(--verde-wa)' : 'var(--borde)'}`;
                 
                 tarjeta.innerHTML = `
                     <div class="prof-bloque-superior">
                         <div class="avatar-iniciales" style="${m.emergencia247 ? 'background:#fee2e2; color:#b91c1c;' : ''}">${iniciales}</div>
                         <div class="prof-info-principal">
-                            <div class="prof-nombre">${m.nombre} ${prefijoId === 'busq' || prefijoId === 'emerg' ? `<span style='font-size:12px; font-weight:normal; color:#64748b;'>(${m.categoria})</span>`:''}</div>
+                            <div class="prof-nombre">${m.nombre} ${prefijoId === 'busq' || prefijoId === 'emerg' ? `<span style='font-size:12px; font-weight:normal; color:var(--texto-suave);'>(${m.categoria})</span>`:''}</div>
                             <div class="rating">${obtenerRatingVisual(m)}</div>
                         </div>
                         <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-end;">
