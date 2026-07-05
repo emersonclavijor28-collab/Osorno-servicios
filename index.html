@@ -12,6 +12,7 @@
             --gris-fondo: #f8fafc;
             --texto-dark: #334155;
             --amarillo-estrella: #eab308;
+            --rojo-emergencia: #dc2626;
         }
         
         body { 
@@ -44,7 +45,7 @@
 
         .bloque-busqueda {
             background: white; padding: 16px; border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); margin-bottom: 15px;
             border: 1px solid #f1f5f9;
         }
         .input-buscador {
@@ -57,6 +58,17 @@
             width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #cbd5e1;
             border-radius: 10px; font-size: 13px; font-weight: 600; color: #475569;
         }
+
+        /* Banner de Emergencia */
+        .banner-emergencia {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 1px solid #fca5a5; border-radius: 16px; padding: 14px;
+            margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;
+            cursor: pointer; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.05);
+        }
+        .banner-emergencia-texto h4 { margin: 0; color: var(--rojo-emergencia); font-size: 15px; font-weight: 800; }
+        .banner-emergencia-texto p { margin: 3px 0 0 0; color: #7f1d1d; font-size: 12px; font-weight: 500; }
+        .btn-banner-rojo { background: var(--rojo-emergencia); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; }
         
         .grid-categorias { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
         .card-categoria { 
@@ -71,6 +83,8 @@
             width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; 
             box-sizing: border-box; font-size: 14px; background: #fff;
         }
+        .checkbox-label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; margin-top: 10px; cursor: pointer; }
+        .checkbox-label input { width: auto; margin: 0; transform: scale(1.2); }
         
         .btn-primario { 
             background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none; 
@@ -100,6 +114,13 @@
         .badge { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 700; display: inline-block; }
         .badge-v { background: #d1fae5; color: #065f46; }
         .badge-p { background: #f1f5f9; color: #64748b; }
+        .badge-247 { background: #fee2e2; color: #b91c1c; animation: pulseRed 2s infinite; }
+
+        @keyframes pulseRed {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
         
         .rating { color: #ea580c; font-weight: 700; font-size: 13px; margin-top: 2px; }
         .cobertura-tag { font-size: 12px; color: var(--celeste-accent); font-weight: 600; margin: 6px 0; }
@@ -116,7 +137,6 @@
             text-align: center; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 700;
             margin-top: 10px; cursor: pointer; text-decoration: none; width: 100%; box-sizing: border-box;
         }
-        .btn-evaluar:active { background: #e2e8f0; }
 
         /* Historial de Reseñas en tarjeta */
         .contenedor-comentarios {
@@ -125,6 +145,12 @@
         }
         .item-comentario { border-bottom: 1px dashed #e2e8f0; padding: 6px 0; }
         .item-comentario:last-child { border: none; }
+
+        /* Módulo de Teléfonos de Utilidad Pública */
+        .grid-utilidad { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .card-utilidad { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: center; text-decoration: none; color: inherit; }
+        .card-utilidad h5 { margin: 0 0 4px 0; font-size: 13px; color: var(--azul-premium); font-weight: 700; }
+        .card-utilidad span { font-size: 14px; color: var(--rojo-emergencia); font-weight: 800; display: block; }
 
         /* Ventana Modal Flotante */
         .modal {
@@ -160,6 +186,14 @@
     <div class="container">
 
         <div id="pantalla-home" class="pantalla activa">
+            <div class="banner-emergencia" onclick="verEmergencias()">
+                <div class="banner-emergencia-texto">
+                    <h4>🚨 Turnos de Emergencia 24/7</h4>
+                    <p>Maestros disponibles por temporales y fugas.</p>
+                </div>
+                <button class="btn-banner-rojo">Ver Listado</button>
+            </div>
+
             <div class="bloque-busqueda">
                 <input type="text" id="input-buscar" class="input-buscador" placeholder="¿Qué buscas? Ej: calefont, caño, cables..." oninput="filtrarBusquedaGlobal()" onkeydown="if(event.key==='Enter') event.preventDefault();">
                 <select id="select-filtro-sector" class="select-sector" onchange="filtrarBusquedaGlobal()">
@@ -190,8 +224,20 @@
         </div>
 
         <div id="pantalla-lista" class="pantalla">
-            <button class="btn-volver" onclick="irA('home')">← Volver</button>
-            <h2 id="titulo-cat" style="font-size: 20px; margin-top: 0;"></h2>
+            <button class="btn-volver" onclick="irA('home')">← Volver al Inicio</button>
+            <h2 id="titulo-cat" style="font-size: 20px; margin-top: 0; color:var(--azul-premium);"></h2>
+            
+            <div id="bloque-telefonos-publicos" style="display:none;">
+                <h4 style="margin: 0 0 10px 0; color:#475569; font-size:14px;">Asistencia Comunal Osorno:</h4>
+                <div class="grid-utilidad">
+                    <a href="tel:132" class="card-utilidad"><h5>🚒 Bomberos</h5><span>132</span></a>
+                    <a href="tel:131" class="card-utilidad"><h5>🚑 SAMU</h5><span>131</span></a>
+                    <a href="tel:133" class="card-utilidad"><h5>🚓 Carabineros</h5><span>133</span></a>
+                    <a href="tel:6004012020" class="card-utilidad"><h5>💡 SAESA</h5><span>600 401 2020</span></a>
+                </div>
+                <h4 style="margin: 15px 0 10px 0; color:var(--rojo-emergencia); font-size:14px;">Técnicos 24 Horas Disponibles:</h4>
+            </div>
+
             <div id="lista-maestros"></div>
         </div>
 
@@ -212,6 +258,12 @@
                 <input type="tel" id="p-fono" required placeholder="Ej: 56912345678">
                 <label>Descripción de tus servicios</label>
                 <textarea id="p-desc" rows="3" required placeholder="Ej: Mantención de calefonts, redes de agua..."></textarea>
+                
+                <label class="checkbox-label">
+                    <input type="checkbox" id="p-emergencia">
+                    ¿Ofreces servicio de Emergencia 24/7?
+                </label>
+
                 <button type="submit" class="btn-primario">Enviar Postulación vía WhatsApp</button>
             </form>
         </div>
@@ -271,32 +323,31 @@
             { 
                 nombre: "Luis Silva", categoria: "Gasfitería", cobertura: "Rahue Alto y Centro", fono: "56912345678", 
                 desc: "Instalación de calefonts a gas, reparación de filtraciones urgentes y destapes de alcantarillado.", 
-                verificado: true, 
+                verificado: true, emergencia247: true,
                 reseñas: [
-                    { autor: "Carlos M.", sector: "Centro", estrellas: 5, texto: "Excelente disposición, vino rápido un sábado por una filtración." },
-                    { autor: "Ana G.", sector: "Rahue Alto", estrellas: 4, texto: "Buen trabajo instalando el termo, recomendado." }
+                    { autor: "Carlos M.", sector: "Centro", estrellas: 5, texto: "Excelente disposición, vino rápido un sábado por una filtración." }
                 ]
             },
             { 
                 nombre: "Raúl Cárcamo", categoria: "Ductos y Estufas", cobertura: "Francke, Kolbe y Ovejería", fono: "56987654321", 
                 desc: "Limpieza certificada de caños, ductos de humo e instalación de estufas a pellet y combustión lenta.", 
-                verificado: true, 
+                verificado: true, emergencia247: false,
                 reseñas: [
-                    { autor: "Juan P.", sector: "Francke", estrellas: 5, texto: "Dejó el caño impecable para pasar el invierno sin sustos. Muy limpio." }
+                    { autor: "Juan P.", sector: "Francke", estrellas: 5, texto: "Dejó el caño impecable para pasar el invierno sin sustos." }
                 ]
             },
             { 
                 nombre: "Andrés Muñoz", categoria: "Electricistas", cobertura: "Todo Osorno, Pilauco", fono: "56955554444", 
-                desc: "Técnico certificado SEC. Reparación de cortocorticuitos, tableros eléctricos, focos y enchufes.", 
-                verificado: false, 
+                desc: "Técnico certificado SEC. Reparación de cortocircuitos, tableros eléctricos de urgencia, focos y enchufes.", 
+                verificado: false, emergencia247: true,
                 reseñas: [] 
             }
         ];
 
-        // Forzar limpieza si detecta datos corruptos o antiguos sin la propiedad reseñas estructurada correctamente
+        // Manejo y actualización de formato en LocalStorage
         try {
             const datosLocales = localStorage.getItem('maestros');
-            if (!datosLocales || !datosLocales.includes('"reseñas"')) {
+            if (!datosLocales || !datosLocales.includes('"emergencia247"')) {
                 localStorage.setItem('maestros', JSON.stringify(profesionalesPorDefecto));
             }
         } catch(e) {
@@ -305,7 +356,7 @@
 
         let maestroSeleccionadoParaEvaluar = null;
         let votoEstrellasSeleccionado = 0;
-        let categoriaActualAbierta = ""; 
+        let modoPantallaActual = ""; // Puede ser una categoría o "emergencia"
 
         function irA(pantallaId) {
             document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
@@ -321,6 +372,7 @@
                 document.getElementById('input-buscar').value = "";
                 document.getElementById('select-filtro-sector').value = "";
                 document.getElementById('resultados-busqueda-directa').style.display = "none";
+                document.getElementById('bloque-telefonos-publicos').style.display = "none";
             }
             window.scrollTo(0,0);
         }
@@ -376,32 +428,21 @@
             document.getElementById('modal-calificacion').classList.add('activa');
         }
 
-        function cerrarModalCalificacion() {
-            document.getElementById('modal-calificacion').classList.remove('activa');
-        }
+        function cerrarModalCalificacion() { document.getElementById('modal-calificacion').classList.remove('activa'); }
 
         function asignarVotoEstrellas(voto) {
             votoEstrellasSeleccionado = voto;
             const estrellas = document.querySelectorAll('.estrella-voto');
             estrellas.forEach((est, index) => {
-                if(index < voto) {
-                    est.classList.add('marcada');
-                } else {
-                    est.classList.remove('marcada');
-                }
+                if(index < voto) est.classList.add('marcada');
+                else est.classList.remove('marcada');
             });
         }
 
         function guardarCalificacionPro() {
-            if(votoEstrellasSeleccionado === 0) {
-                alert("Por favor, marca al menos 1 estrella.");
-                return;
-            }
+            if(votoEstrellasSeleccionado === 0) { alert("Por favor, marca al menos 1 estrella."); return; }
             const comentarioText = document.getElementById('modal-comentario').value.trim();
-            if(comentarioText === "") {
-                alert("Por favor, comparte un breve comentario de tu experiencia.");
-                return;
-            }
+            if(comentarioText === "") { alert("Por favor, comparte un breve comentario."); return; }
 
             const cliente = JSON.parse(localStorage.getItem('cliente'));
             const maestros = JSON.parse(localStorage.getItem('maestros'));
@@ -410,12 +451,8 @@
             
             if(indice !== -1) {
                 if(!maestros[indice].reseñas) maestros[indice].reseñas = [];
-                
                 maestros[indice].reseñas.push({
-                    autor: cliente.nombre,
-                    sector: cliente.sector,
-                    estrellas: votoEstrellasSeleccionado,
-                    texto: comentarioText
+                    autor: cliente.nombre, sector: cliente.sector, estrellas: votoEstrellasSeleccionado, texto: comentarioText
                 });
 
                 localStorage.setItem('maestros', JSON.stringify(maestros));
@@ -425,12 +462,11 @@
                 const inputBuscar = document.getElementById('input-buscar').value;
                 if(inputBuscar !== "" || document.getElementById('select-filtro-sector').value !== "") {
                     filtrarBusquedaGlobal();
-                } else if (categoriaActualAbierta !== "") {
-                    verCategoria(categoriaActualAbierta);
+                } else if (modoPantallaActual === "emergencia") {
+                    verEmergencias();
+                } else {
+                    verCategoria(modoPantallaActual);
                 }
-            } else {
-                alert("Ocurrió un error. Intenta refrescar el listado.");
-                cerrarModalCalificacion();
             }
         }
 
@@ -449,12 +485,8 @@
             contenedorLista.innerHTML = "";
 
             const maestros = JSON.parse(localStorage.getItem('maestros'));
-
             const filtrados = maestros.filter(m => {
-                const cumpleTexto = textoBusqueda === "" || 
-                                    m.nombre.toLowerCase().includes(textoBusqueda) || 
-                                    m.categoria.toLowerCase().includes(textoBusqueda) || 
-                                    m.desc.toLowerCase().includes(textoBusqueda);
+                const cumpleTexto = textoBusqueda === "" || m.nombre.toLowerCase().includes(textoBusqueda) || m.categoria.toLowerCase().includes(textoBusqueda) || m.desc.toLowerCase().includes(textoBusqueda);
                 const cumpleSector = sectorSeleccionado === "" || m.cobertura.toLowerCase().includes(sectorSeleccionado);
                 return cumpleTexto && cumpleSector;
             });
@@ -464,83 +496,76 @@
                 return;
             }
 
-            filtrados.forEach((m, idx) => {
-                const iniciales = m.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                
-                // CREACIÓN DINÁMICA SEGURA USANDO PLANTILLAS DE LITERALES LIMPIAS
-                const tarjeta = document.createElement('div');
-                tarjeta.className = 'card-profesional';
-                tarjeta.style.borderLeft = `5px solid ${m.verificado ? 'var(--verde-wa)' : '#cbd5e1'}`;
-                tarjeta.innerHTML = `
-                    <div class="prof-bloque-superior">
-                        <div class="avatar-iniciales">${iniciales}</div>
-                        <div class="prof-info-principal">
-                            <div class="prof-nombre">${m.nombre} <span style="font-size:12px; font-weight:normal; color:#64748b;">(${m.categoria})</span></div>
-                            <div class="rating">${obtenerRatingVisual(m)}</div>
-                        </div>
-                        <div>
-                            ${m.verificado ? '<span class="badge badge-v">✅ Verificado</span>' : '<span class="badge badge-p">⏳ Pendiente</span>'}
-                        </div>
-                    </div>
-                    <div class="cobertura-tag">📍 Cobertura: ${m.cobertura}</div>
-                    <div class="prof-desc">${m.desc}</div>
-                    ${generarBloqueComentariosHTML(m)}
-                    <button class="btn-evaluar" id="btn-eval-busq-${idx}">📝 Dejar Reseña como Vecino</button>
-                    <a class="btn-whatsapp" href="https://wa.me/${m.fono}?text=Hola%20${encodeURIComponent(m.nombre)},%20vi%20tu%20perfil%20en%20Osorno%20Servicios." target="_blank">
-                        <span>💬</span> Contactar por WhatsApp
-                    </a>
-                `;
-                contenedorLista.appendChild(tarjeta);
-                
-                // Inyección del evento libre de strings y comillas conflictivas
-                document.getElementById(`btn-eval-busq-${idx}`).addEventListener('click', () => {
-                    abrirModalCalificacion(m.nombre);
-                });
-            });
+            renderizarTarjetas(filtrados, contenedorLista, "busq");
         }
 
         function verCategoria(cat) {
-            categoriaActualAbierta = cat; 
+            modoPantallaActual = cat; 
             irA('lista');
+            document.getElementById('bloque-telefonos-publicos').style.display = "none";
             document.getElementById('titulo-cat').innerText = "Especialistas en " + cat;
+            
             const maestros = JSON.parse(localStorage.getItem('maestros'));
             const filtrados = maestros.filter(m => m.categoria === cat);
             const contenedor = document.getElementById('lista-maestros');
             contenedor.innerHTML = "";
 
             if(filtrados.length === 0) {
-                contenedor.innerHTML = "<p class='intro' style='margin-top:30px;'>No hay técnicos inscritos actualmente en esta categoría.</p>";
+                contenedor.innerHTML = "<p style='margin-top:20px; font-style:italic; color:#64748b;'>No hay técnicos en esta categoría.</p>";
                 return;
             }
+            renderizarTarjetas(filtrados, contenedor, "cat");
+        }
 
-            filtrados.forEach((m, idx) => {
+        // NUEVA FUNCIÓN: Filtrar y mostrar turnos de emergencia 24/7
+        function verEmergencias() {
+            modoPantallaActual = "emergencia";
+            irA('lista');
+            document.getElementById('titulo-cat').innerText = "🚨 Turno de Emergencias 24/7";
+            document.getElementById('bloque-telefonos-publicos').style.display = "block";
+            
+            const maestros = JSON.parse(localStorage.getItem('maestros'));
+            const filtrados = maestros.filter(m => m.emergencia247 === true);
+            const contenedor = document.getElementById('lista-maestros');
+            contenedor.innerHTML = "";
+
+            if(filtrados.length === 0) {
+                contenedor.innerHTML = "<p style='margin-top:15px; font-style:italic; color:#64748b;'>No hay turnos de emergencia reportados hoy.</p>";
+                return;
+            }
+            renderizarTarjetas(filtrados, contenedor, "emerg");
+        }
+
+        function renderizarTarjetas(arreglo, contenedor, prefijoId) {
+            arreglo.forEach((m, idx) => {
                 const iniciales = m.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                
                 const tarjeta = document.createElement('div');
                 tarjeta.className = 'card-profesional';
-                tarjeta.style.borderLeft = `5px solid ${m.verificado ? 'var(--verde-wa)' : '#cbd5e1'}`;
+                tarjeta.style.borderLeft = m.emergencia247 ? '5px solid var(--rojo-emergencia)' : `5px solid ${m.verificado ? 'var(--verde-wa)' : '#cbd5e1'}`;
+                
                 tarjeta.innerHTML = `
                     <div class="prof-bloque-superior">
-                        <div class="avatar-iniciales">${iniciales}</div>
+                        <div class="avatar-iniciales" style="${m.emergencia247 ? 'background:#fee2e2; color:#b91c1c;' : ''}">${iniciales}</div>
                         <div class="prof-info-principal">
-                            <div class="prof-nombre">${m.nombre}</div>
+                            <div class="prof-nombre">${m.nombre} ${prefijoId === 'busq' || prefijoId === 'emerg' ? `<span style='font-size:12px; font-weight:normal; color:#64748b;'>(${m.categoria})</span>`:''}</div>
                             <div class="rating">${obtenerRatingVisual(m)}</div>
                         </div>
-                        <div>
+                        <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-end;">
+                            ${m.emergencia247 ? '<span class="badge badge-247">🚨 24/7</span>' : ''}
                             ${m.verificado ? '<span class="badge badge-v">✅ Verificado</span>' : '<span class="badge badge-p">⏳ Pendiente</span>'}
                         </div>
                     </div>
                     <div class="cobertura-tag">📍 Cobertura: ${m.cobertura}</div>
                     <div class="prof-desc">${m.desc}</div>
                     ${generarBloqueComentariosHTML(m)}
-                    <button class="btn-evaluar" id="btn-eval-cat-${idx}">📝 Dejar Reseña como Vecino</button>
-                    <a class="btn-whatsapp" href="https://wa.me/${m.fono}?text=Hola%20${encodeURIComponent(m.nombre)},%20vi%20tu%20perfil%20en%20Osorno%20Servicios%20y%20necesito%20una%20consulta." target="_blank">
-                        <span>💬</span> Contactar por WhatsApp
+                    <button class="btn-evaluar" id="btn-${prefijoId}-${idx}">📝 Dejar Reseña como Vecino</button>
+                    <a class="btn-whatsapp" style="${m.emergencia247 ? 'background:var(--rojo-emergencia);' : ''}" href="https://wa.me/${m.fono}?text=¡EMERGENCIA!%20Hola%20${encodeURIComponent(m.nombre)},%20necesito%20asistencia%20urgente%20desde%20Osorno%20Servicios." target="_blank">
+                        <span>💬</span> ${m.emergencia247 ? 'CONTACTAR URGENTE 24/7' : 'Contactar por WhatsApp'}
                     </a>
                 `;
                 contenedor.appendChild(tarjeta);
                 
-                document.getElementById(`btn-eval-cat-${idx}`).addEventListener('click', () => {
+                document.getElementById(`btn-${prefijoId}-${idx}`).addEventListener('click', () => {
                     abrirModalCalificacion(m.nombre);
                 });
             });
@@ -565,16 +590,17 @@
             const cobertura = document.getElementById('p-cobertura').value.trim();
             const fono = document.getElementById('p-fono').value.trim();
             const desc = document.getElementById('p-desc').value.trim();
+            const esEmergencia = document.getElementById('p-emergencia').checked;
 
             const nuevo = {
                 nombre: nombre, categoria: cat, cobertura: cobertura, fono: fono, desc: desc,
-                verificado: false, reseñas: []
+                verificado: false, emergencia247: esEmergencia, reseñas: []
             };
 
             maestros.push(nuevo);
             localStorage.setItem('maestros', JSON.stringify(maestros));
             
-            const mensajeAdmin = `Hola, acabo de postular a Osorno Servicios.\n\n*Datos de mi perfil:*\n• Nombre: ${nombre}\n• Rubro: ${cat}\n• Cobertura: ${cobertura}\n• Fono: ${fono}`;
+            const mensajeAdmin = `Hola, acabo de postular a Osorno Servicios.\n\n*Datos de mi perfil:*\n• Nombre: ${nombre}\n• Rubro: ${cat}\n• Turno 24/7: ${esEmergencia ? 'SÍ' : 'NO'}\n• Fono: ${fono}`;
             alert("¡Datos guardados! Ahora se abrirá tu WhatsApp para enviar la información al administrador.");
             window.open(`https://wa.me/${WHATSAPP_ADMINISTRADOR}?text=${encodeURIComponent(mensajeAdmin)}`, '_blank');
             document.getElementById('form-prof').reset();
