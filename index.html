@@ -112,14 +112,16 @@
         }
 
         .btn-evaluar {
-            background: #fff; color: #475569; border: 1px solid #cbd5e1; display: block;
-            text-align: center; padding: 8px; border-radius: 8px; font-size: 13px; font-weight: 600;
-            margin-top: 8px; cursor: pointer; text-decoration: none; width: 100%; box-sizing: border-box;
+            background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; display: block;
+            text-align: center; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 700;
+            margin-top: 10px; cursor: pointer; text-decoration: none; width: 100%; box-sizing: border-box;
         }
+        .btn-evaluar:active { background: #e2e8f0; }
 
         /* Historial de Reseñas en tarjeta */
         .contenedor-comentarios {
             background: #f8fafc; border-radius: 10px; padding: 10px; margin-top: 10px; font-size: 12px;
+            border: 1px solid #e2e8f0;
         }
         .item-comentario { border-bottom: 1px dashed #e2e8f0; padding: 6px 0; }
         .item-comentario:last-child { border: none; }
@@ -130,20 +132,20 @@
             background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
             z-index: 1000; align-items: center; justify-content: center; padding: 20px;
         }
-        .modal.activo { display: flex; }
+        .modal.activa { display: flex; }
         .modal-contenido {
             background: white; width: 100%; max-width: 400px; padding: 20px;
             border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
         }
-        .estrellas-selector { display: flex; gap: 10px; font-size: 30px; margin: 10px 0; cursor: pointer; }
-        .estrella-voto { color: #cbd5e1; }
+        .estrellas-selector { display: flex; gap: 10px; font-size: 32px; margin: 12px 0; cursor: pointer; }
+        .estrella-voto { color: #cbd5e1; transition: color 0.1s; }
         .estrella-voto.marcada { color: var(--amarillo-estrella); }
 
         /* Barra Inferior */
         .nav-inferior { 
             position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.92); 
             backdrop-filter: blur(8px); display: flex; justify-content: space-around; padding: 12px 0 20px; 
-            box-shadow: 0 -4px 12px rgba(0,0,0,0.03); border-top: 1px solid #f1f5f9;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.03); border-top: 1px solid #f1f5f9; z-index: 90;
         }
         .nav-item { background: none; border: none; color: #94a3b8; font-size: 11px; cursor: pointer; text-align: center; }
         .nav-item.activo { color: var(--celeste-accent); font-weight: 700; }
@@ -157,10 +159,9 @@
     
     <div class="container">
 
-        <!-- PANTALLA 1: HOME -->
         <div id="pantalla-home" class="pantalla activa">
             <div class="bloque-busqueda">
-                <input type="text" id="input-buscar" class="input-buscador" placeholder="¿Qué buscas? Ej: calefont, caño, cables..." oninput="filtrarBusquedaGlobal()">
+                <input type="text" id="input-buscar" class="input-buscador" placeholder="¿Qué buscas? Ej: calefont, caño, cables..." oninput="filtrarBusquedaGlobal()" onkeydown="if(event.key==='Enter') event.preventDefault();">
                 <select id="select-filtro-sector" class="select-sector" onchange="filtrarBusquedaGlobal()">
                     <option value="">🗺️ Ver todos los sectores de Osorno</option>
                     <option value="Rahue">Rahue (Alto / Bajo / II)</option>
@@ -188,14 +189,12 @@
             </div>
         </div>
 
-        <!-- PANTALLA 2: LISTA POR CATEGORÍA -->
         <div id="pantalla-lista" class="pantalla">
             <button class="btn-volver" onclick="irA('home')">← Volver</button>
             <h2 id="titulo-cat" style="font-size: 20px; margin-top: 0;"></h2>
             <div id="lista-maestros"></div>
         </div>
 
-        <!-- PANTALLA 3: REGISTRO MAESTRO -->
         <div id="pantalla-registro-prof" class="pantalla">
             <h2 style="margin-top:0;">Registro de Profesionales</h2>
             <form id="form-prof" onsubmit="registrarProfesional(event)">
@@ -217,7 +216,6 @@
             </form>
         </div>
 
-        <!-- PANTALLA 4: PERFIL CLIENTE -->
         <div id="pantalla-perfil" class="pantalla">
             <h2 style="margin-top:0;">Perfil de Usuario</h2>
             <div id="bloque-registro-cliente">
@@ -239,7 +237,6 @@
 
     </div>
 
-    <!-- Formulario Flotante de Calificación (Modal) -->
     <div id="modal-calificacion" class="modal">
         <div class="modal-contenido">
             <h3 style="margin-top:0; color:var(--azul-premium);" id="modal-titulo-maestro">Calificar Maestro</h3>
@@ -254,7 +251,7 @@
             </div>
 
             <label>Escribe tu reseña sobre el servicio:</label>
-            <textarea id="modal-comentario" rows="3" placeholder="Ej: Llegó puntual a Rahue, solucionó el problema rápido y cobró lo justo."></textarea>
+            <textarea id="modal-comentario" rows="3" placeholder="Ej: Llegó puntual, solucionó el problema rápido y cobró lo justo."></textarea>
             
             <button class="btn-primario" onclick="guardarCalificacionPro()">Publicar Evaluación</button>
             <button class="btn-volver" onclick="cerrarModalCalificacion()" style="width:100%; margin-top:10px;">Cancelar</button>
@@ -290,28 +287,36 @@
             },
             { 
                 nombre: "Andrés Muñoz", categoria: "Electricistas", cobertura: "Todo Osorno, Pilauco", fono: "56955554444", 
-                desc: "Técnico certificado SEC. Reparación de cortocircuitos, tableros eléctricos, focos y enchufes.", 
+                desc: "Técnico certificado SEC. Reparación de cortocorticuitos, tableros eléctricos, focos y enchufes.", 
                 verificado: false, 
                 reseñas: [] 
             }
         ];
 
-        // CORRECCIÓN AUTOMÁTICA DE FORMATOS VIEJOS
-        const datosLocales = localStorage.getItem('maestros');
-        if (!datosLocales || !datosLocales.includes('"reseñas"')) {
+        // Forzar limpieza si detecta datos corruptos o antiguos sin la propiedad reseñas estructurada correctamente
+        try {
+            const datosLocales = localStorage.getItem('maestros');
+            if (!datosLocales || !datosLocales.includes('"reseñas"')) {
+                localStorage.setItem('maestros', JSON.stringify(profesionalesPorDefecto));
+            }
+        } catch(e) {
             localStorage.setItem('maestros', JSON.stringify(profesionalesPorDefecto));
         }
 
         let maestroSeleccionadoParaEvaluar = null;
         let votoEstrellasSeleccionado = 0;
-        let categoriaActualAbierta = ""; // Guarda en qué categoría estamos parados
+        let categoriaActualAbierta = ""; 
 
         function irA(pantallaId) {
             document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('activo'));
-            document.getElementById('pantalla-' + pantallaId).classList.add('activa');
+            
+            const targetPantalla = document.getElementById('pantalla-' + pantallaId);
+            if(targetPantalla) targetPantalla.classList.add('activa');
+            
             const btn = document.getElementById('btn-nav-' + (pantallaId === 'lista' ? 'home' : pantallaId === 'registro-prof' ? 'reg' : pantallaId));
             if(btn) btn.classList.add('activo');
+            
             if(pantallaId === 'home') {
                 document.getElementById('input-buscar').value = "";
                 document.getElementById('select-filtro-sector').value = "";
@@ -360,7 +365,7 @@
         function abrirModalCalificacion(nombreMaestro) {
             const cliente = JSON.parse(localStorage.getItem('cliente'));
             if(!cliente) {
-                alert("Debes ir a la pestaña 'Mi Perfil' e ingresar tu nombre de vecino antes de evaluar a un profesional.");
+                alert("Debes registrarte en la pestaña 'Mi Perfil' con tu nombre de vecino antes de evaluar servicios.");
                 irA('perfil');
                 return;
             }
@@ -394,14 +399,13 @@
             }
             const comentarioText = document.getElementById('modal-comentario').value.trim();
             if(comentarioText === "") {
-                alert("Por favor, escribe un breve comentario sobre el servicio.");
+                alert("Por favor, comparte un breve comentario de tu experiencia.");
                 return;
             }
 
             const cliente = JSON.parse(localStorage.getItem('cliente'));
             const maestros = JSON.parse(localStorage.getItem('maestros'));
             
-            // CORREGIDO: Búsqueda exacta limpia por nombre para evitar fallos
             const indice = maestros.findIndex(m => m.nombre.trim() === maestroSeleccionadoParaEvaluar.trim());
             
             if(indice !== -1) {
@@ -415,10 +419,9 @@
                 });
 
                 localStorage.setItem('maestros', JSON.stringify(maestros));
-                alert("¡Muchas gracias! Tu opinión ayuda a la comunidad de Osorno.");
+                alert("¡Evaluación publicada con éxito!");
                 cerrarModalCalificacion();
                 
-                // CORREGIDO: Forzar recarga visual instantánea de la pantalla donde estás parado
                 const inputBuscar = document.getElementById('input-buscar').value;
                 if(inputBuscar !== "" || document.getElementById('select-filtro-sector').value !== "") {
                     filtrarBusquedaGlobal();
@@ -426,7 +429,7 @@
                     verCategoria(categoriaActualAbierta);
                 }
             } else {
-                alert("Hubo un error al ubicar al profesional. Reintenta desde la lista.");
+                alert("Ocurrió un error. Intenta refrescar el listado.");
                 cerrarModalCalificacion();
             }
         }
@@ -461,35 +464,43 @@
                 return;
             }
 
-            filtrados.forEach(m => {
+            filtrados.forEach((m, idx) => {
                 const iniciales = m.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                // CORREGIDO: Se envía m.nombre limpio sin concatenaciones raras en el onclick del botón evaluar
-                contenedorLista.innerHTML += `
-                    <div class="card-profesional" style="border-left: 5px solid ${m.verificado ? 'var(--verde-wa)' : '#cbd5e1'}">
-                        <div class="prof-bloque-superior">
-                            <div class="avatar-iniciales">${iniciales}</div>
-                            <div class="prof-info-principal">
-                                <div class="prof-nombre">${m.nombre} <span style="font-size:12px; font-weight:normal; color:#64748b;">(${m.categoria})</span></div>
-                                <div class="rating">${obtenerRatingVisual(m)}</div>
-                            </div>
-                            <div>
-                                ${m.verificado ? '<span class="badge badge-v">✅ Verificado</span>' : '<span class="badge badge-p">⏳ Pendiente</span>'}
-                            </div>
+                
+                // CREACIÓN DINÁMICA SEGURA USANDO PLANTILLAS DE LITERALES LIMPIAS
+                const tarjeta = document.createElement('div');
+                tarjeta.className = 'card-profesional';
+                tarjeta.style.borderLeft = `5px solid ${m.verificado ? 'var(--verde-wa)' : '#cbd5e1'}`;
+                tarjeta.innerHTML = `
+                    <div class="prof-bloque-superior">
+                        <div class="avatar-iniciales">${iniciales}</div>
+                        <div class="prof-info-principal">
+                            <div class="prof-nombre">${m.nombre} <span style="font-size:12px; font-weight:normal; color:#64748b;">(${m.categoria})</span></div>
+                            <div class="rating">${obtenerRatingVisual(m)}</div>
                         </div>
-                        <div class="cobertura-tag">📍 Cobertura: ${m.cobertura}</div>
-                        <div class="prof-desc">${m.desc}</div>
-                        ${generarBloqueComentariosHTML(m)}
-                        <button class="btn-evaluar" onclick="abrirModalCalificacion('${m.nombre.replace(/'/g, "\\'")}')">📝 Dejar Reseña como Vecino</button>
-                        <a class="btn-whatsapp" href="https://wa.me/${m.fono}?text=Hola%20${encodeURIComponent(m.nombre)},%20vi%20tu%20perfil%20en%20Osorno%20Servicios." target="_blank">
-                            <span>💬</span> Contactar por WhatsApp
-                        </a>
+                        <div>
+                            ${m.verificado ? '<span class="badge badge-v">✅ Verificado</span>' : '<span class="badge badge-p">⏳ Pendiente</span>'}
+                        </div>
                     </div>
+                    <div class="cobertura-tag">📍 Cobertura: ${m.cobertura}</div>
+                    <div class="prof-desc">${m.desc}</div>
+                    ${generarBloqueComentariosHTML(m)}
+                    <button class="btn-evaluar" id="btn-eval-busq-${idx}">📝 Dejar Reseña como Vecino</button>
+                    <a class="btn-whatsapp" href="https://wa.me/${m.fono}?text=Hola%20${encodeURIComponent(m.nombre)},%20vi%20tu%20perfil%20en%20Osorno%20Servicios." target="_blank">
+                        <span>💬</span> Contactar por WhatsApp
+                    </a>
                 `;
+                contenedorLista.appendChild(tarjeta);
+                
+                // Inyección del evento libre de strings y comillas conflictivas
+                document.getElementById(`btn-eval-busq-${idx}`).addEventListener('click', () => {
+                    abrirModalCalificacion(m.nombre);
+                });
             });
         }
 
         function verCategoria(cat) {
-            categoriaActualAbierta = cat; // Registrar categoría actual
+            categoriaActualAbierta = cat; 
             irA('lista');
             document.getElementById('titulo-cat').innerText = "Especialistas en " + cat;
             const maestros = JSON.parse(localStorage.getItem('maestros'));
@@ -502,37 +513,44 @@
                 return;
             }
 
-            filtrados.forEach(m => {
+            filtrados.forEach((m, idx) => {
                 const iniciales = m.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                contenedor.innerHTML += `
-                    <div class="card-profesional" style="border-left: 5px solid ${m.verificado ? 'var(--verde-wa)' : '#cbd5e1'}">
-                        <div class="prof-bloque-superior">
-                            <div class="avatar-iniciales">${iniciales}</div>
-                            <div class="prof-info-principal">
-                                <div class="prof-nombre">${m.nombre}</div>
-                                <div class="rating">${obtenerRatingVisual(m)}</div>
-                            </div>
-                            <div>
-                                ${m.verificado ? '<span class="badge badge-v">✅ Verificado</span>' : '<span class="badge badge-p">⏳ Pendiente</span>'}
-                            </div>
+                
+                const tarjeta = document.createElement('div');
+                tarjeta.className = 'card-profesional';
+                tarjeta.style.borderLeft = `5px solid ${m.verificado ? 'var(--verde-wa)' : '#cbd5e1'}`;
+                tarjeta.innerHTML = `
+                    <div class="prof-bloque-superior">
+                        <div class="avatar-iniciales">${iniciales}</div>
+                        <div class="prof-info-principal">
+                            <div class="prof-nombre">${m.nombre}</div>
+                            <div class="rating">${obtenerRatingVisual(m)}</div>
                         </div>
-                        <div class="cobertura-tag">📍 Cobertura: ${m.cobertura}</div>
-                        <div class="prof-desc">${m.desc}</div>
-                        ${generarBloqueComentariosHTML(m)}
-                        <button class="btn-evaluar" onclick="abrirModalCalificacion('${m.nombre.replace(/'/g, "\\'")}')">📝 Dejar Reseña como Vecino</button>
-                        <a class="btn-whatsapp" href="https://wa.me/${m.fono}?text=Hola%20${encodeURIComponent(m.nombre)},%20vi%20tu%20perfil%20en%20Osorno%20Servicios%20y%20necesito%20una%20consulta." target="_blank">
-                            <span>💬</span> Contactar por WhatsApp
-                        </a>
+                        <div>
+                            ${m.verificado ? '<span class="badge badge-v">✅ Verificado</span>' : '<span class="badge badge-p">⏳ Pendiente</span>'}
+                        </div>
                     </div>
+                    <div class="cobertura-tag">📍 Cobertura: ${m.cobertura}</div>
+                    <div class="prof-desc">${m.desc}</div>
+                    ${generarBloqueComentariosHTML(m)}
+                    <button class="btn-evaluar" id="btn-eval-cat-${idx}">📝 Dejar Reseña como Vecino</button>
+                    <a class="btn-whatsapp" href="https://wa.me/${m.fono}?text=Hola%20${encodeURIComponent(m.nombre)},%20vi%20tu%20perfil%20en%20Osorno%20Servicios%20y%20necesito%20una%20consulta." target="_blank">
+                        <span>💬</span> Contactar por WhatsApp
+                    </a>
                 `;
+                contenedor.appendChild(tarjeta);
+                
+                document.getElementById(`btn-eval-cat-${idx}`).addEventListener('click', () => {
+                    abrirModalCalificacion(m.nombre);
+                });
             });
         }
 
         function registrarCliente(e) {
             e.preventDefault();
             const cliente = {
-                nombre: document.getElementById('c-nombre').value,
-                sector: document.getElementById('c-sector').value
+                nombre: document.getElementById('c-nombre').value.trim(),
+                sector: document.getElementById('c-sector').value.trim()
             };
             localStorage.setItem('cliente', JSON.stringify(cliente));
             actualizarCabecera();
@@ -542,11 +560,11 @@
         function registrarProfesional(e) {
             e.preventDefault();
             const maestros = JSON.parse(localStorage.getItem('maestros'));
-            const nombre = document.getElementById('p-nombre').value;
+            const nombre = document.getElementById('p-nombre').value.trim();
             const cat = document.getElementById('p-cat').value;
-            const cobertura = document.getElementById('p-cobertura').value;
-            const fono = document.getElementById('p-fono').value;
-            const desc = document.getElementById('p-desc').value;
+            const cobertura = document.getElementById('p-cobertura').value.trim();
+            const fono = document.getElementById('p-fono').value.trim();
+            const desc = document.getElementById('p-desc').value.trim();
 
             const nuevo = {
                 nombre: nombre, categoria: cat, cobertura: cobertura, fono: fono, desc: desc,
