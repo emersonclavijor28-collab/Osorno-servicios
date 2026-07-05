@@ -20,7 +20,6 @@
             color: var(--texto-dark); 
         }
 
-        /* Encabezado Moderno */
         header { 
             background: linear-gradient(135deg, #1e3a8a, #0f172a); 
             color: white; padding: 20px 15px; text-align: center; 
@@ -41,27 +40,42 @@
             from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* NUEVO: Bloque de Búsqueda y Filtros Premium */
+        .bloque-busqueda {
+            background: white; padding: 16px; border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); margin-bottom: 20px;
+            border: 1px solid #f1f5f9;
+        }
+        .input-buscador {
+            width: 100%; padding: 12px 14px 12px 40px; border: 1px solid #cbd5e1;
+            border-radius: 10px; font-size: 14px; box-sizing: border-box;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>') no-repeat 14px center;
+            background-color: #f8fafc;
+        }
+        .select-sector {
+            width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #cbd5e1;
+            border-radius: 10px; font-size: 13px; font-weight: 600; color: #475569;
+            background-color: white;
+        }
         
-        .intro { text-align: center; font-size: 14px; color: #64748b; margin-bottom: 20px; line-height: 1.5; }
-        
-        /* Grid de Categorías con Estilo Premium */
+        /* Grid de Categorías */
         .grid-categorias { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
         .card-categoria { 
             background: white; border: none; padding: 22px 12px; border-radius: 16px; 
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
             text-align: center; cursor: pointer; font-weight: 700; color: #1e293b;
             transition: all 0.2s ease; border: 1px solid #f1f5f9;
         }
         .card-categoria:active { transform: scale(0.96); background-color: #f8fafc; }
         .card-categoria .icono { font-size: 34px; display: block; margin-bottom: 8px; }
 
-        /* Estilos de Formularios Elegantes */
+        /* Formularios */
         label { display: block; margin: 14px 0 6px; font-weight: 600; font-size: 14px; color: #1e293b; }
         input, select, textarea { 
             width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; 
-            box-sizing: border-box; font-size: 14px; background: #fff; transition: border 0.2s;
+            box-sizing: border-box; font-size: 14px; background: #fff;
         }
-        input:focus, select:focus, textarea:focus { border-color: var(--celeste-accent); outline: none; }
         
         .btn-primario { 
             background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none; 
@@ -73,14 +87,13 @@
             font-weight: 600; color: #475569; cursor: pointer; margin-bottom: 15px;
         }
 
-        /* Tarjetas de Profesionales con Avatares */
+        /* Tarjetas de Profesionales */
         .card-profesional { 
             background: white; border-radius: 16px; padding: 16px; margin-bottom: 16px; 
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); border: 1px solid #f1f5f9;
         }
         .prof-bloque-superior { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
         
-        /* Avatar Circular con iniciales */
         .avatar-iniciales {
             width: 46px; height: 46px; background: #e0f2fe; color: #0369a1;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
@@ -103,14 +116,14 @@
             font-weight: 700; margin-top: 12px; box-shadow: 0 4px 8px rgba(34,197,94,0.15);
         }
 
-        /* Barra Inferior Estilo iOS/Android */
+        /* Barra Inferior */
         .nav-inferior { 
             position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.92); 
             backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
             display: flex; justify-content: space-around; padding: 12px 0 20px; 
             box-shadow: 0 -4px 12px rgba(0,0,0,0.03); border-top: 1px solid #f1f5f9;
         }
-        .nav-item { background: none; border: none; color: #94a3b8; font-size: 11px; cursor: pointer; text-align: center; transition: color 0.2s; }
+        .nav-item { background: none; border: none; color: #94a3b8; font-size: 11px; cursor: pointer; text-align: center; }
         .nav-item.activo { color: var(--celeste-accent); font-weight: 700; }
         .nav-item .nav-icono { font-size: 22px; display: block; margin-bottom: 2px; }
     </style>
@@ -124,8 +137,29 @@
 
         <!-- PANTALLA 1: HOME -->
         <div id="pantalla-home" class="pantalla activa">
-            <p class="intro">Encuentra y contacta técnicos verificados con antecedentes revisados en la comuna de Osorno.</p>
-            <div class="grid-categorias">
+            
+            <!-- NUEVO: Buscador Global de Servicios -->
+            <div class="bloque-busqueda">
+                <input type="text" id="input-buscar" class="input-buscador" placeholder="¿Qué buscas? Ej: calefont, caño, cables..." oninput="filtrarBusquedaGlobal()">
+                <select id="select-filtro-sector" class="select-sector" onchange="filtrarBusquedaGlobal()">
+                    <option value="">🗺️ Ver todos los sectores de Osorno</option>
+                    <option value="Rahue">Rahue (Alto / Bajo / II)</option>
+                    <option value="Francke">Francke / Pampa Alegre</option>
+                    <option value="Ovejería">Ovejería (Alto / Bajo)</option>
+                    <option value="Centro">Centro de Osorno</option>
+                    <option value="Las Quemas">Las Quemas / Pilauco</option>
+                </select>
+            </div>
+
+            <!-- Contenedor dinámico para cuando se busca algo -->
+            <div id="resultados-busqueda-directa" style="display:none; margin-bottom:20px;">
+                <h3 style="font-size:16px; margin-top:0; color:var(--azul-premium);">Resultados encontrados:</h3>
+                <div id="lista-resultados-globales"></div>
+                <hr style="border:0; border-top: 1px dashed #cbd5e1; margin: 20px 0;">
+                <h3 style="font-size:15px; color:#64748b;">O navega por categorías:</h3>
+            </div>
+
+            <div class="grid-categorias" id="contenedor-categorias-home">
                 <button class="card-categoria" onclick="verCategoria('Gasfitería')"><span class="icono">🚰</span>Gasfitería</button>
                 <button class="card-categoria" onclick="verCategoria('Electricistas')"><span class="icono">⚡</span>Electricistas</button>
                 <button class="card-categoria" onclick="verCategoria('Construcción')"><span class="icono">🧱</span>Construcción</button>
@@ -135,7 +169,7 @@
             </div>
         </div>
 
-        <!-- PANTALLA 2: LISTA -->
+        <!-- PANTALLA 2: LISTA POR CATEGORÍA -->
         <div id="pantalla-lista" class="pantalla">
             <button class="btn-volver" onclick="irA('home')">← Volver</button>
             <h2 id="titulo-cat" style="font-size: 20px; margin-top: 0;"></h2>
@@ -168,7 +202,7 @@
 
                 <div style="background: #f0fdf4; padding: 12px; border-radius: 12px; margin-top: 15px; border: 1px dashed #22c55e; font-size: 13px; color: #14532d;">
                     <strong style="display:block; margin-bottom:4px;">🛡️ Proceso de Seguridad Obligatorio</strong>
-                    Al enviar este formulario se te redirigirá a WhatsApp para que nos envíes tu Certificado de Antecedentes vigente. Tu perfil no tendrá el sello verificado hasta cumplir este paso.
+                    Al enviar este formulario se te redirigirá a WhatsApp para enviar tu Certificado de Antecedentes vigente. Tu perfil no tendrá el sello verificado hasta cumplir este paso.
                 </div>
 
                 <button type="submit" class="btn-primario">Enviar Postulación vía WhatsApp</button>
@@ -189,16 +223,15 @@
                 </form>
             </div>
             <div id="bloque-perfil-activo" style="display:none; background:white; padding:20px; border-radius:16px; border:1px solid #f1f5f9;">
-                <h3 style="margin-top:0;">¡Hola, <span id="user-nombre" style="color:var(--celeste-accent);"></span>!</h3>
-                <p style="margin: 6px 0;">📍 <b>Sector residencial:</b> <span id="user-sector"></span></p>
-                <p style="font-size: 13px; color: #64748b; line-height: 1.4;">Estás navegando en modo local. Pronto podrás calificar directamente a los maestros con tu cuenta de vecino activa.</p>
+                <h3>¡Hola, <span id="user-nombre" style="color:var(--celeste-accent);"></span>!</h3>
+                <p>📍 <b>Sector residencial:</b> <span id="user-sector"></span></p>
+                <p style="font-size: 13px; color: #64748b;">Estás navegando en modo local. Pronto podrás calificar directamente a los maestros con tu cuenta de vecino activa.</p>
                 <button class="btn-volver" onclick="cerrarSesion()" style="background:#fee2e2; color:#991b1b; width:100%; border:none; padding:12px; margin-top:15px; border-radius:10px; font-weight:700;">Cerrar Sesión</button>
             </div>
         </div>
 
     </div>
 
-    <!-- NAVEGACIÓN INFERIOR -->
     <nav class="nav-inferior">
         <button class="nav-item activo" id="btn-nav-home" onclick="irA('home')">
             <span class="nav-icono">🏠</span>Inicio
@@ -212,13 +245,13 @@
     </nav>
 
     <script>
-        // CONFIGURACIÓN: Ingresa aquí tu número de WhatsApp personal de Administrador (con 569...)
+        // Recuerda colocar tu número de administrador aquí
         const WHATSAPP_ADMINISTRADOR = "569XXXXXXXX"; 
 
         const profesionalesPorDefecto = [
-            { nombre: "Luis Silva", categoria: "Gasfitería", cobertura: "Rahue Alto y Centro", fono: "56912345678", desc: "Instalación de calefonts y destapes de cañerías urgentes.", verificado: true, rating: "4.9 (12 reseñas)", recs: "Recomendado por Junta de Vecinos Rahue II." },
-            { nombre: "Raúl Cárcamo", categoria: "Ductos y Estufas", cobertura: "Francke, Kolbe y Ovejería", fono: "56987654321", desc: "Limpieza certificada de caños e instalación de estufas a pellet.", verificado: true, rating: "5.0 (8 reseñas)", recs: "Comprobado con boleta de servicio técnico." },
-            { nombre: "Andrés Muñoz", categoria: "Electricistas", cobertura: "Todo Osorno", fono: "56955554444", desc: "Técnico SEC. Cortocorticuitos y reparaciones eléctricas rápidas.", verificado: false, rating: "Nuevo miembro", recs: "Pendiente validación de antecedentes." }
+            { nombre: "Luis Silva", categoria: "Gasfitería", cobertura: "Rahue Alto y Centro", fono: "56912345678", desc: "Instalación de calefonts a gas, reparación de filtraciones urgentes y destapes de alcantarillado.", verificado: true, rating: "4.9 (12 reseñas)", recs: "Recomendado por Junta de Vecinos Rahue II." },
+            { nombre: "Raúl Cárcamo", categoria: "Ductos y Estufas", cobertura: "Francke, Kolbe y Ovejería", fono: "56987654321", desc: "Limpieza certificada de caños, ductos de humo e instalación de estufas a pellet y combustión lenta.", verificado: true, rating: "5.0 (8 reseñas)", recs: "Comprobado con boleta de servicio técnico." },
+            { nombre: "Andrés Muñoz", categoria: "Electricistas", cobertura: "Todo Osorno, Pilauco", fono: "56955554444", desc: "Técnico certificado SEC. Reparación de cortocircuitos, tableros eléctricos, focos y enchufes.", verificado: false, rating: "Nuevo miembro", recs: "Pendiente validación de antecedentes." }
         ];
 
         if (!localStorage.getItem('maestros')) {
@@ -231,6 +264,13 @@
             document.getElementById('pantalla-' + pantallaId).classList.add('activa');
             const btn = document.getElementById('btn-nav-' + (pantallaId === 'lista' ? 'home' : pantallaId === 'registro-prof' ? 'reg' : pantallaId));
             if(btn) btn.classList.add('activo');
+            
+            // Si volvemos al home, limpiar el buscador
+            if(pantallaId === 'home') {
+                document.getElementById('input-buscar').value = "";
+                document.getElementById('select-filtro-sector').value = "";
+                document.getElementById('resultados-busqueda-directa').style.display = "none";
+            }
             window.scrollTo(0,0);
         }
 
@@ -247,6 +287,67 @@
                 document.getElementById('bloque-registro-cliente').style.display = 'block';
                 document.getElementById('bloque-perfil-activo').style.display = 'none';
             }
+        }
+
+        // NUEVO: Algoritmo de Búsqueda Inteligente Global y Filtrado por Barrio de Osorno
+        function filtrarBusquedaGlobal() {
+            const textoBusqueda = document.getElementById('input-buscar').value.toLowerCase().trim();
+            const sectorSeleccionado = document.getElementById('select-filtro-sector').value.toLowerCase();
+            const bloqueResultados = document.getElementById('resultados-busqueda-directa');
+            const contenedorLista = document.getElementById('lista-resultados-globales');
+            
+            // Si el buscador y el filtro están vacíos, ocultar resultados y mostrar categorías normales
+            if (textoBusqueda === "" && sectorSeleccionado === "") {
+                bloqueResultados.style.display = "none";
+                return;
+            }
+
+            bloqueResultados.style.display = "block";
+            contenedorLista.innerHTML = "";
+
+            const maestros = JSON.parse(localStorage.getItem('maestros'));
+
+            // Filtrar inteligentemente comparando texto y zona geográfica
+            const filtrados = maestros.filter(m => {
+                const cumpleTexto = textoBusqueda === "" || 
+                                    m.nombre.toLowerCase().includes(textoBusqueda) || 
+                                    m.categoria.toLowerCase().includes(textoBusqueda) || 
+                                    m.desc.toLowerCase().includes(textoBusqueda);
+                                    
+                const cumpleSector = sectorSeleccionado === "" || 
+                                     m.cobertura.toLowerCase().includes(sectorSeleccionado);
+
+                return cumpleTexto && cumpleSector;
+            });
+
+            if (filtrados.length === 0) {
+                contenedorLista.innerHTML = "<p style='color:#64748b; font-size:14px; font-style:italic;'>No se encontraron técnicos que coincidan con tu búsqueda en ese sector.</p>";
+                return;
+            }
+
+            // Renderizar las tarjetas resultantes en tiempo real
+            filtrados.forEach(m => {
+                const iniciales = m.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                contenedorLista.innerHTML += `
+                    <div class="card-profesional" style="border-left: 5px solid ${m.verificado ? 'var(--verde-wa)' : '#cbd5e1'}">
+                        <div class="prof-bloque-superior">
+                            <div class="avatar-iniciales">${iniciales}</div>
+                            <div class="prof-info-principal">
+                                <div class="prof-nombre">${m.nombre} <span style="font-size:12px; font-weight:normal; color:#64748b;">(${m.categoria})</span></div>
+                                <div class="rating">⭐ ${m.rating}</div>
+                            </div>
+                            <div>
+                                ${m.verificado ? '<span class="badge badge-v">✅ Verificado</span>' : '<span class="badge badge-p">⏳ Pendiente</span>'}
+                            </div>
+                        </div>
+                        <div class="cobertura-tag">📍 Cobertura: ${m.cobertura}</div>
+                        <div class="prof-desc">${m.desc}</div>
+                        <a class="btn-whatsapp" href="https://wa.me/${m.fono}?text=Hola%20${encodeURIComponent(m.nombre)},%20vi%20tu%20perfil%20en%20Osorno%20Servicios." target="_blank">
+                            <span>💬</span> Contactar por WhatsApp
+                        </a>
+                    </div>
+                `;
+            });
         }
 
         function registrarCliente(e) {
@@ -279,11 +380,9 @@
             }
 
             filtrados.forEach(m => {
-                // Generar iniciales para el avatar circular
                 const iniciales = m.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                
                 contenedor.innerHTML += `
-                    <div class="card-profesional">
+                    <div class="card-profesional" style="border-left: 5px solid ${m.verificado ? 'var(--verde-wa)' : '#cbd5e1'}">
                         <div class="prof-bloque-superior">
                             <div class="avatar-iniciales">${iniciales}</div>
                             <div class="prof-info-principal">
@@ -329,12 +428,9 @@
             maestros.push(nuevo);
             localStorage.setItem('maestros', JSON.stringify(maestros));
             
-            // Construir el mensaje automático para TI (el administrador)
             const mensajeAdmin = `Hola, acabo de postular a Osorno Servicios.\n\n*Datos de mi perfil:*\n• Nombre: ${nombre}\n• Rubro: ${cat}\n• Cobertura: ${cobertura}\n• Fono: ${fono}\n\nQuedo atento para enviar mi Certificado de Antecedentes para activar la cuenta.`;
             
             alert("¡Datos guardados! Ahora se abrirá tu WhatsApp para enviarle la confirmación y tus documentos al administrador del sistema de Osorno.");
-            
-            // Redirigir al WhatsApp del Administrador de la app
             window.open(`https://wa.me/${WHATSAPP_ADMINISTRADOR}?text=${encodeURIComponent(mensajeAdmin)}`, '_blank');
             
             document.getElementById('form-prof').reset();
