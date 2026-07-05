@@ -5,135 +5,253 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Osorno Servicios</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background-color: #f4f6f9; color: #333; }
-        header { background-color: #1e3a8a; color: white; padding: 18px; text-align: center; font-size: 22px; font-weight: bold; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .sub-header { background-color: #3b82f6; color: white; text-align: center; padding: 6px; font-size: 13px; font-weight: 500; }
-        .container { padding: 15px; max-width: 500px; margin: 0 auto; }
+        :root { --azul: #1e3a8a; --celeste: #3b82f6; --verde: #25D366; --gris-fondo: #f4f6f9; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background-color: var(--gris-fondo); color: #333; }
+        header { background-color: var(--azul); color: white; padding: 15px; text-align: center; font-size: 20px; font-weight: bold; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .sub-header { background-color: var(--celeste); color: white; text-align: center; padding: 6px; font-size: 12px; font-weight: 500; }
+        .container { padding: 15px; max-width: 500px; margin: 0 auto; padding-bottom: 80px; }
         
-        /* Control de pantallas */
+        /* Sistema de Pantallas */
         .pantalla { display: none; }
         .pantalla.activa { display: block; }
+        
+        /* Tarjetas y Contenedores */
+        .card { background: white; padding: 18px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); margin-bottom: 15px; }
+        .intro { text-align: center; font-size: 14px; color: #666; margin-bottom: 15px; }
+        
+        /* Grid de Categorías */
+        .grid-categorias { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .card-categoria { background: white; border: none; padding: 20px 10px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); text-align: center; cursor: pointer; font-weight: bold; color: var(--azul); }
+        .card-categoria .icono { font-size: 28px; display: block; margin-bottom: 5px; }
 
-        .intro { text-align: center; margin-bottom: 20px; font-size: 15px; color: #666; }
-        
-        /* Cuadrícula de Categorías */
-        .grid-categorias { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .card-categoria { background: white; border: none; padding: 25px 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.03); text-align: center; cursor: pointer; transition: transform 0.2s; -webkit-tap-highlight-color: transparent; }
-        .card-categoria:active { transform: scale(0.95); background-color: #f0f4ff; }
-        .card-categoria .icono { font-size: 32px; margin-bottom: 10px; display: block; }
-        .card-categoria .nombre { font-size: 16px; font-weight: bold; color: #1e3a8a; }
+        /* Formularios e Inputs */
+        label { display: block; margin: 10px 0 5px; font-weight: bold; font-size: 14px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 14px; background: #fff; }
+        .btn-primario { background-color: var(--azul); color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px; margin-top: 15px; }
+        .btn-volver { background: #e5e7eb; border: none; padding: 8px 12px; border-radius: 6px; font-weight: bold; color: #4b5563; cursor: pointer; margin-bottom: 15px; }
 
-        /* Tarjetas de Profesionales */
-        .btn-volver { background: #e5e7eb; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; color: #4b5563; cursor: pointer; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 5px; }
-        .titulo-categoria { font-size: 20px; color: #1e3a8a; margin-bottom: 15px; font-weight: bold; text-align: left; }
-        
-        .card-profesional { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.03); border-left: 5px solid #25d366; text-align: left; }
-        .profesional-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-        .profesional-nombre { font-size: 18px; font-weight: bold; color: #111827; }
-        .badge-verificado { background-color: #d1fae5; color: #065f46; font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: bold; }
-        .profesional-cobertura { font-size: 13px; color: #2563eb; font-weight: 500; margin-bottom: 8px; }
-        .profesional-descripcion { font-size: 14px; color: #4b5563; margin-bottom: 15px; line-height: 1.4; }
-        
-        .btn-contacto { background-color: #25D366; color: white; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: bold; text-align: center; display: block; transition: background 0.2s; box-shadow: 0 2px 4px rgba(37,211,102,0.2); }
-        .btn-contacto:active { background-color: #128C7E; }
+        /* Lista de Profesionales */
+        .card-profesional { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); border-left: 5px solid #ccc; }
+        .card-profesional.verificado { border-left-color: var(--verde); }
+        .prof-header { display: flex; justify-content: space-between; align-items: center; }
+        .badge { font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: bold; }
+        .badge-v { background: #d1fae5; color: #065f46; }
+        .badge-p { background: #fee2e2; color: #991b1b; }
+        .rating { color: #f59e0b; font-weight: bold; font-size: 14px; margin: 5px 0; }
+        .btn-whatsapp { background: var(--verde); color: white; text-decoration: none; display: block; text-align: center; padding: 10px; border-radius: 8px; font-weight: bold; margin-top: 10px; }
+
+        /* Barra de Navegación Inferior */
+        .nav-inferior { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .nav-item { background: none; border: none; color: #6b7280; font-size: 11px; cursor: pointer; text-align: center; }
+        .nav-item.activo { color: var(--azul); font-weight: bold; }
+        .nav-item .nav-icono { font-size: 20px; display: block; }
     </style>
 </head>
 <body>
 
-    <header>🛠️ Osorno Servicios</header>
-    <div class="sub-header">📍 Soluciones del Hogar en Osorno</div>
+    <header id="app-titulo">🛠️ Osorno Servicios</header>
+    <div class="sub-header" id="info-usuario">📍 Modo Invitado</div>
     
     <div class="container">
 
-        <!-- PANTALLA 1: MENÚ PRINCIPAL -->
-        <div id="pantalla-menu" class="pantalla activa">
-            <p class="intro">¿Qué servicio necesitas hoy? Elige una categoría para ver profesionales disponibles:</p>
+        <!-- PANTALLA 1: HOME (CATEGORÍAS) -->
+        <div id="pantalla-home" class="pantalla activa">
+            <p class="intro">Encuentra técnicos confiables con antecedentes revisados en la comuna.</p>
             <div class="grid-categorias">
-                <button class="card-categoria" onclick="mostrarCategoria('Gasfitería')">
-                    <span class="icono">🚰</span><span class="nombre">Gasfitería</span>
-                </button>
-                <button class="card-categoria" onclick="mostrarCategoria('Electricistas')">
-                    <span class="icono">⚡</span><span class="nombre">Electricistas</span>
-                </button>
-                <button class="card-categoria" onclick="mostrarCategoria('Construcción')">
-                    <span class="icono">🧱</span><span class="nombre">Construcción</span>
-                </button>
-                <button class="card-categoria" onclick="mostrarCategoria('Ductos y Estufas')">
-                    <span class="icono">🔥</span><span class="nombre">Ductos y Estufas</span>
-                </button>
+                <button class="card-categoria" onclick="verCategoria('Gasfitería')"><span class="icono">🚰</span>Gasfitería</button>
+                <button class="card-categoria" onclick="verCategoria('Electricistas')"><span class="icono">⚡</span>Electricistas</button>
+                <button class="card-categoria" onclick="verCategoria('Construcción')"><span class="icono">🧱</span>Construcción</button>
+                <button class="card-categoria" onclick="verCategoria('Ductos y Estufas')"><span class="icono">🔥</span>Limpia Caños</button>
+                <button class="card-categoria" onclick="verCategoria('Línea Blanca')"><span class="icono">❄️</span>Línea Blanca</button>
+                <button class="card-categoria" onclick="verCategoria('Jardinería')"><span class="icono">🌱</span>Jardinería</button>
             </div>
         </div>
 
         <!-- PANTALLA 2: LISTA DE PROFESIONALES -->
         <div id="pantalla-lista" class="pantalla">
-            <button class="btn-volver" onclick="mostrarMenu()">← Volver al menú</button>
-            <div id="nombre-categoria-activa" class="titulo-categoria">Categoría</div>
-            
-            <!-- Aquí el código inyectará dinámicamente las tarjetas de los maestros -->
-            <div id="contenedor-profesionales"></div>
+            <button class="btn-volver" onclick="irA('home')">← Volver</button>
+            <h2 id="titulo-cat"></h2>
+            <div id="lista-maestros"></div>
+        </div>
+
+        <!-- PANTALLA 3: REGISTRO PROFESIONAL -->
+        <div id="pantalla-registro-prof" class="pantalla">
+            <h2>Registro de Profesionales</h2>
+            <p class="intro">Súmate a la red de Osorno. Tu perfil mostrará el estado de tu validación.</p>
+            <form id="form-prof" onsubmit="registrarProfesional(event)">
+                <label>Nombre Completo</label>
+                <input type="text" id="p-nombre" required placeholder="Ej: Juan Pérez">
+
+                <label>Categoría Principal</label>
+                <select id="p-cat">
+                    <option>Gasfitería</option><option>Electricistas</option>
+                    <option>Construcción</option><option>Ductos y Estufas</option>
+                    <option>Línea Blanca</option><option>Jardinería</option>
+                </select>
+
+                <label>Sectores de Osorno que cubre</label>
+                <input type="text" id="p-cobertura" required placeholder="Ej: Rahue Alto, Francke, Centro">
+
+                <label>WhatsApp de Contacto</label>
+                <input type="tel" id="p-fono" required placeholder="Ej: 56912345678">
+
+                <label>Breve descripción de tus servicios</label>
+                <textarea id="p-desc" rows="3" required placeholder="Cuéntale a los vecinos tu experiencia..."></textarea>
+
+                <div style="background: #f0fdf4; padding: 10px; border-radius: 8px; margin-top: 15px; border: 1px dashed #22c55e;">
+                    <h4 style="margin: 0 0 5px 0; color: #166534;">🛡️ Proceso de Validación Requerido</h4>
+                    <p style="font-size: 12px; margin: 0; color: #166534;">Para obtener el sello <b>Verificado ✅</b>, deberás enviar tu Certificado de Antecedentes y foto de Cédula al Administrador tras enviar este formulario.</p>
+                </div>
+
+                <button type="submit" class="btn-primario">Enviar Postulación</button>
+            </form>
+        </div>
+
+        <!-- PANTALLA 4: REGISTRO/PERFIL CLIENTE -->
+        <div id="pantalla-perfil" class="pantalla">
+            <h2>Perfil de Usuario</h2>
+            <div id="bloque-registro-cliente">
+                <p class="intro">Regístrate como cliente para poder calificar, dejar reseñas y guardar tus maestros favoritos.</p>
+                <form id="form-cliente" onsubmit="registrarCliente(event)">
+                    <label>Tu Nombre</label>
+                    <input type="text" id="c-nombre" required placeholder="Ej: María José">
+                    <label>Sector de residencia en Osorno</label>
+                    <input type="text" id="c-sector" required placeholder="Ej: Ovejería Bajo">
+                    <button type="submit" class="btn-primario">Crear Cuenta</button>
+                </form>
+            </div>
+            <div id="bloque-perfil-activo" style="display:none;" class="card">
+                <h3>¡Hola, <span id="user-nombre"></span>!</h3>
+                <p>📍 <b>Sector:</b> <span id="user-sector"></span></p>
+                <p style="font-size: 13px; color: #666;">Ya puedes tomar contacto directo y tus futuras reseñas aparecerán con tu perfil verificado de vecino.</p>
+                <button class="btn-volver" onclick="cerrarSesion()" style="background:#fee2e2; color:#991b1b; width:100%;">Cerrar Sesión</button>
+            </div>
         </div>
 
     </div>
 
-    <!-- LÓGICA DE LA APP (JAVASCRIPT) -->
-    <script>
-        // Datos de simulación (Nuestros primeros maestros en Osorno)
-        const baseDeDatos = {
-            "Gasfitería": [
-                { nombre: "Juan Carlos Soto", cobertura: "📍 Cobertura: Todo Osorno (Rahue, Francke, Centro)", descripcion: "Especialista en instalación de calefonts, reparación de fugas de agua y destapes de alcantarillado. Más de 10 años de experiencia.", celular: "56912345678" },
-                { nombre: "Pedro Almonacid", cobertura: "📍 Cobertura: Rahue Alto y Rahue Bajo", descripcion: "Gasfitería general, mantención de griferías y cañerías de cobre/PPR. Trabajo rápido y garantizado.", celular: "56987654321" }
-            ],
-            "Electricistas": [
-                { nombre: "Carlos Méndez", cobertura: "📍 Cobertura: Las Quemas, Pilauco y Centro", descripcion: "Técnico certificado SEC. Instalaciones eléctricas domiciliarias, aumento de capacidad, tableros y cortocircuitos.", celular: "56955554444" }
-            ],
-            "Construcción": [
-                { nombre: "Maestro Hugo", cobertura: "📍 Cobertura: Todo Osorno / Alrededores", descripcion: "Carpintería, ampliaciones, techumbres, radieres y colocación de cerámicas. Presupuestos gratis en terreno.", celular: "56933332222" }
-            ],
-            "Ductos y Estufas": [
-                { nombre: "Jorge Cárdenas", cobertura: "📍 Cobertura: Francke, Ovejería y Quinta Centenario", descripcion: "Limpieza profunda de caños de combustión lenta, cocinas a leña y estufas a pellet. Evite siniestros, trabajo con kit profesional.", celular: "56977778888" }
-            ]
-        };
+    <!-- MENÚ DE NAVEGACIÓN INFERIOR (Estilo App Nativa) -->
+    <nav class="nav-inferior">
+        <button class="nav-item activo" id="btn-nav-home" onclick="irA('home')">
+            <span class="nav-icono">🏠</span>Inicio
+        </button>
+        <button class="nav-item" id="btn-nav-reg" onclick="irA('registro-prof')">
+            <span class="nav-icono">🛠️</span>Soy Maestro
+        </button>
+        <button class="nav-item" id="btn-nav-perfil" onclick="irA('perfil')">
+            <span class="nav-icono">👤</span>Mi Perfil
+        </button>
+    </nav>
 
-        // Función para cambiar a la pantalla de profesionales
-        function mostrarCategoria(categoria) {
-            document.getElementById('pantalla-menu').classList.remove('activa');
-            document.getElementById('pantalla-lista').classList.add('activa');
-            document.getElementById('nombre-categoria-activa').innerText = "Maestros en " + categoria;
+    <script>
+        // Base inicial por defecto (si la memoria está vacía)
+        const profesionalesPorDefecto = [
+            { nombre: "Luis Silva", categoria: "Gasfitería", cobertura: "Rahue Alto y Centro", fono: "56912345678", desc: "Instalación de calefonts y destapes de cañerías urgentes.", verificado: true, rating: "4.9 (12 reseñas)", recs: "Recomendado por Junta de Vecinos Rahue II." },
+            { nombre: "Raúl Cárcamo", categoria: "Ductos y Estufas", cobertura: "Francke, Kolbe y Ovejería", fono: "56987654321", desc: "Limpieza certificada de caños e instalación de estufas a pellet.", verificado: true, rating: "5.0 (8 reseñas)", recs: "Comprobado con boleta de servicio técnico." },
+            { nombre: "Andrés Muñoz", categoria: "Electricistas", cobertura: "Todo Osorno", fono: "56955554444", desc: "Técnico SEC. Cortocircuitos y cableado general doméstico.", verificado: false, rating: "Sin reseñas", recs: "Pendiente revisión de antecedentes." }
+        ];
+
+        // Cargar o inicializar la Base de Datos Local
+        if (!localStorage.getItem('maestros')) {
+            localStorage.setItem('maestros', JSON.stringify(profesionalesPorDefecto));
+        }
+
+        function irA(pantallaId) {
+            document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('activo'));
             
-            const contenedor = document.getElementById('contenedor-profesionales');
-            contenedor.innerHTML = ""; // Limpiar lista anterior
-            
-            const listaMaestros = baseDeDatos[categoria] || [];
-            
-            if(listaMaestros.length === 0) {
-                contenedor.innerHTML = "<p style='color:#666;'>Por el momento no hay maestros registrados en esta categoría en Osorno.</p>";
+            document.getElementById('pantalla-' + pantallaId).classList.add('activa');
+            const btn = document.getElementById('btn-nav-' + (pantallaId === 'lista' ? 'home' : pantallaId === 'registro-prof' ? 'reg' : pantallaId));
+            if(btn) btn.classList.add('activo');
+            window.scrollTo(0,0);
+        }
+
+        function actualizarCabecera() {
+            const cliente = JSON.parse(localStorage.getItem('cliente'));
+            if(cliente) {
+                document.getElementById('info-usuario').innerText = `👤 Vecino(a): ${cliente.nombre} (${cliente.sector})`;
+                document.getElementById('bloque-registro-cliente').style.display = 'none';
+                document.getElementById('bloque-perfil-activo').style.display = 'block';
+                document.getElementById('user-nombre').innerText = cliente.nombre;
+                document.getElementById('user-sector').innerText = cliente.sector;
+            } else {
+                document.getElementById('info-usuario').innerText = "📍 Modo Invitado";
+                document.getElementById('bloque-registro-cliente').style.display = 'block';
+                document.getElementById('bloque-perfil-activo').style.display = 'none';
+            }
+        }
+
+        function registrarCliente(e) {
+            e.preventDefault();
+            const cliente = {
+                nombre: document.getElementById('c-nombre').value,
+                sector: document.getElementById('c-sector').value
+            };
+            localStorage.setItem('cliente', JSON.stringify(cliente));
+            actualizarCabecera();
+            irA('home');
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('cliente');
+            actualizarCabecera();
+        }
+
+        function verCategoria(cat) {
+            irA('lista');
+            document.getElementById('titulo-cat').innerText = "Especialistas en " + cat;
+            const maestros = JSON.parse(localStorage.getItem('maestros'));
+            const filtrados = maestros.filter(m => m.categoria === cat);
+            const contenedor = document.getElementById('lista-maestros');
+            contenedor.innerHTML = "";
+
+            if(filtrados.length === 0) {
+                contenedor.innerHTML = "<p class='intro'>No hay inscritos en este momento en Osorno.</p>";
                 return;
             }
 
-            // Construir las tarjetas una por una
-            listaMaestros.forEach(maestro => {
-                const tarjeta = `
-                    <div class="card-profesional">
-                        <div class="profesional-header">
-                            <div class="profesional-nombre">${maestro.nombre}</div>
-                            <span class="badge-verificado">✅ Verificado</span>
+            filtrados.forEach(m => {
+                contenedor.innerHTML += `
+                    <div class="card-profesional ${m.verificado ? 'verificado' : ''}">
+                        <div class="prof-header">
+                            <strong style="font-size:17px;">${m.nombre}</strong>
+                            ${m.verificado ? '<span class="badge badge-v">✅ Verificado</span>' : '<span class="badge badge-p">⏳ Pendiente Revisión</span>'}
                         </div>
-                        <div class="profesional-cobertura">${maestro.cobertura}</div>
-                        <div class="profesional-descripcion">${maestro.descripcion}</div>
-                        <a href="https://wa.me/${maestro.celular}?text=Hola%20${encodeURIComponent(maestro.nombre)},%20vi%20tu%20perfil%20en%20Osorno%20Servicios%20y%20necesito%20una%20cotizacion." target="_blank" class="btn-contacto">
-                            💬 Contactar por WhatsApp
-                        </a>
+                        <div class="rating">⭐ ${m.rating}</div>
+                        <p style="font-size:13px; color:#2563eb; margin:5px 0;"><b>Sectores:</b> ${m.cobertura}</p>
+                        <p style="font-size:13px; color:#4b5563; margin:5px 0;">${m.desc}</p>
+                        <p style="font-size:12px; color:#6b7280; font-style:italic; background:#f3f4f6; padding:5px; border-radius:4px;">📋 <b>Reseña/Orígenes:</b> ${m.recs}</p>
+                        <a class="btn-whatsapp" href="https://wa.me/${m.fono}?text=Hola,%20vi%20tu%20perfil%20en%20Osorno%20Servicios." target="_blank">💬 Contactar por WhatsApp</a>
                     </div>
                 `;
-                contenedor.innerHTML += tarjeta;
             });
         }
 
-        // Función para regresar al menú principal
-        function mostrarMenu() {
-            document.getElementById('pantalla-lista').classList.remove('activa');
-            document.getElementById('pantalla-menu').classList.add('activa');
+        function registrarProfesional(e) {
+            e.preventDefault();
+            const maestros = JSON.parse(localStorage.getItem('maestros'));
+            
+            const nuevo = {
+                nombre: document.getElementById('p-nombre').value,
+                categoria: document.getElementById('p-cat').value,
+                cobertura: document.getElementById('p-cobertura').value,
+                fono: document.getElementById('p-fono').value,
+                desc: document.getElementById('p-desc').value,
+                verificado: false, // Inicia falso hasta validar antecedentes manualmente
+                rating: "Nuevo miembro",
+                recs: "Documentos de identidad ingresados a revisión del administrador."
+            };
+
+            maestros.push(nuevo);
+            localStorage.setItem('maestros', JSON.stringify(maestros));
+            
+            alert("¡Postulación enviada con éxito! Recuerda enviar tu Certificado de Antecedentes al correo o WhatsApp del administrador de Osorno Servicios para activar tu sello Verificado.");
+            document.getElementById('form-prof').reset();
+            irA('home');
         }
+
+        // Ejecutar al cargar la app
+        actualizarCabecera();
     </script>
 </body>
 </html>
