@@ -5,220 +5,251 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Osorno Servicios</title>
     <style>
-        /* Variables de Diseño Core (Modo Claro por Defecto) */
+        /* Sistema de Diseño Global - Paleta de Colores Curada */
         :root { 
-            --azul-premium: #0f172a; 
-            --celeste-accent: #2563eb; 
-            --verde-wa: #22c55e; 
-            --gris-fondo: #f8fafc;
-            --texto-dark: #334155;
-            --texto-suave: #64748b;
-            --borde: #e2e8f0;
-            --blanco-card: #ffffff;
-            --amarillo-estrella: #eab308;
+            --bg-global: #f1f5f9;
+            --surface: #ffffff;
+            --surface-accent: #f8fafc;
+            --primary: #2563eb; 
+            --primary-gradient: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            --text-main: #0f172a; 
+            --text-muted: #64748b;
+            --border: rgba(226, 232, 240, 0.8);
+            --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.02);
+            --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+            --verde-wa: #16a34a; 
             --rojo-emergencia: #dc2626;
-            --bg-emergencia: linear-gradient(135deg, #fee2e2, #fecaca);
-            --borde-emergencia: #fca5a5;
-            --texto-emergencia: #7f1d1d;
-            --icon-color: #475569;
+            --bg-emergencia: linear-gradient(135deg, #fef2f2, #fee2e2);
+            --borde-emergencia: rgba(254, 202, 202, 0.7);
+            --text-emergencia: #991b1b;
+            --star-color: #f59e0b;
         }
         
-        /* Paleta de Colores Inteligente: Modo Oscuro Automático */
         @media (prefers-color-scheme: dark) {
             :root {
-                --azul-premium: #f8fafc;
-                --celeste-accent: #3b82f6;
-                --gris-fondo: #0f172a;
-                --texto-dark: #cbd5e1;
-                --texto-suave: #94a3b8;
-                --borde: #334155;
-                --blanco-card: #1e293b;
-                --bg-emergencia: linear-gradient(135deg, #451a03, #7f1d1d);
-                --borde-emergencia: #b91c1c;
-                --texto-emergencia: #fef2f2;
-                --icon-color: #94a3b8;
+                --bg-global: #0b0f19;
+                --surface: #151f32;
+                --surface-accent: #1e293b;
+                --primary: #3b82f6;
+                --primary-gradient: linear-gradient(135deg, #60a5fa, #2563eb);
+                --text-main: #f8fafc;
+                --text-muted: #94a3b8;
+                --border: rgba(51, 65, 85, 0.5);
+                --shadow-md: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+                --bg-emergencia: linear-gradient(135deg, #451a03, #2d0606);
+                --borde-emergencia: rgba(185, 28, 28, 0.4);
+                --text-emergencia: #fca5a5;
             }
         }
 
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif; 
             margin: 0; padding: 0; 
-            background-color: var(--gris-fondo); 
-            color: var(--texto-dark);
-            transition: background-color 0.3s, color 0.3s;
+            background-color: var(--bg-global); 
+            color: var(--text-main);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            -webkit-font-smoothing: antialiased;
         }
 
         header { 
-            background: linear-gradient(135deg, #1e3a8a, #0f172a); 
-            color: white; padding: 20px 15px; text-align: center; 
-            font-size: 22px; font-weight: 800; position: sticky; top: 0; z-index: 100; 
-            box-shadow: 0 4px 12px rgba(15,23,42,0.08); 
+            background: rgba(21, 31, 50, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: white; padding: 22px 15px; text-align: center; 
+            font-size: 20px; font-weight: 800; position: sticky; top: 0; z-index: 100; 
+            letter-spacing: -0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
         .sub-header { 
-            background-color: var(--celeste-accent); 
-            color: white; text-align: center; padding: 6px; 
-            font-size: 12px; font-weight: 600; letter-spacing: 0.5px;
+            background-color: var(--primary); 
+            color: white; text-align: center; padding: 8px; 
+            font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
         }
 
-        .container { padding: 15px; max-width: 500px; margin: 0 auto; padding-bottom: 90px; }
+        .container { padding: 20px 16px; max-width: 480px; margin: 0 auto; padding-bottom: 100px; }
         .pantalla { display: none; }
-        .pantalla.activa { display: block; animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+        .pantalla.activa { display: block; animation: smoothSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
+        @keyframes smoothSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Bloques de Búsqueda Elegantizados */
         .bloque-busqueda {
-            background: var(--blanco-card); padding: 16px; border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); margin-bottom: 15px;
-            border: 1px solid var(--borde);
+            background: var(--surface); padding: 20px; border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md); margin-bottom: 24px;
+            border: 1px solid var(--border);
         }
         .input-buscador {
-            width: 100%; padding: 12px 14px 12px 40px; border: 1px solid var(--borde);
-            border-radius: 10px; font-size: 14px; box-sizing: border-box;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%2364748b" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>') no-repeat 14px center;
-            background-color: var(--gris-fondo);
-            color: var(--texto-dark);
+            width: 100%; padding: 14px 14px 14px 44px; border: 1px solid var(--border);
+            border-radius: var(--radius-md); font-size: 14px; box-sizing: border-box;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%2394a3b8" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>') no-repeat 16px center;
+            background-color: var(--surface-accent);
+            color: var(--text-main); transition: all 0.2s ease;
         }
+        .input-buscador:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+        
         .select-sector {
-            width: 100%; padding: 10px; margin-top: 10px; border: 1px solid var(--borde);
-            border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--texto-dark);
-            background-color: var(--blanco-card);
+            width: 100%; padding: 12px; margin-top: 12px; border: 1px solid var(--border);
+            border-radius: var(--radius-md); font-size: 13px; font-weight: 600; color: var(--text-main);
+            background-color: var(--surface-accent); cursor: pointer;
         }
 
-        /* Banner de Emergencia Rediseñado */
+        /* Banner de Emergencia Premium */
         .banner-emergencia {
             background: var(--bg-emergencia);
-            border: 1px solid var(--borde-emergencia); border-radius: 16px; padding: 14px;
-            margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;
-            cursor: pointer; transition: transform 0.2s;
+            border: 1px solid var(--borde-emergencia); border-radius: var(--radius-lg); padding: 16px;
+            margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between;
+            cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--shadow-sm);
         }
-        .banner-emergencia:active { transform: scale(0.98); }
-        .banner-emergencia-texto h4 { margin: 0; color: var(--rojo-emergencia); font-size: 15px; font-weight: 800; }
-        .banner-emergencia-texto p { margin: 3px 0 0 0; color: var(--texto-emergencia); font-size: 12px; font-weight: 500; }
-        .btn-banner-rojo { background: var(--rojo-emergencia); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; }
+        .banner-emergencia:active { transform: scale(0.97); filter: brightness(0.95); }
+        .banner-emergencia-texto h4 { margin: 0; color: var(--rojo-emergencia); font-size: 15px; font-weight: 800; letter-spacing: -0.3px; }
+        .banner-emergencia-texto p { margin: 4px 0 0 0; color: var(--text-emergencia); font-size: 12px; font-weight: 500; opacity: 0.9; }
+        .btn-banner-rojo { background: var(--rojo-emergencia); color: white; border: none; padding: 8px 14px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
+        .btn-banner-rojo:hover { opacity: 0.9; }
         
-        /* Grid de Categorías con Iconos Premium */
+        /* Grid de Categorías Minimalista Moderno */
         .grid-categorias { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
         .card-categoria { 
-            background: var(--blanco-card); border: 1px solid var(--borde); padding: 20px 12px; border-radius: 16px; 
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.01); text-align: center; cursor: pointer;
-            font-weight: 700; color: var(--azul-premium); transition: transform 0.2s, box-shadow 0.2s;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+            background: var(--surface); border: 1px solid var(--border); padding: 24px 16px; border-radius: var(--radius-lg); 
+            box-shadow: var(--shadow-sm); text-align: center; cursor: pointer;
+            font-weight: 700; font-size: 13px; color: var(--text-main); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
         }
-        .card-categoria:active { transform: scale(0.96); background-color: var(--gris-fondo); }
-        .card-categoria svg { width: 32px; height: 32px; fill: var(--celeste-accent); }
+        .card-categoria:active { transform: scale(0.95); background-color: var(--surface-accent); }
+        .card-categoria .icon-wrapper {
+            width: 48px; height: 48px; border-radius: var(--radius-md);
+            background: rgba(37, 99, 235, 0.06); display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .card-categoria:active .icon-wrapper { background: rgba(37, 99, 235, 0.15); }
+        .card-categoria svg { width: 24px; height: 24px; fill: var(--primary); }
 
-        label { display: block; margin: 14px 0 6px; font-weight: 600; font-size: 14px; color: var(--azul-premium); }
+        /* Estilos de Formularios Profesionales */
+        label { display: block; margin: 16px 0 6px; font-weight: 700; font-size: 13px; color: var(--text-main); letter-spacing: -0.1px; }
         input, select, textarea { 
-            width: 100%; padding: 12px; border: 1px solid var(--borde); border-radius: 10px; 
-            box-sizing: border-box; font-size: 14px; background: var(--blanco-card); color: var(--texto-dark);
+            width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); 
+            box-sizing: border-box; font-size: 14px; background: var(--surface); color: var(--text-main);
+            transition: all 0.2s;
         }
-        .checkbox-label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; margin-top: 10px; cursor: pointer; }
-        .checkbox-label input { width: auto; margin: 0; transform: scale(1.2); }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
+        .checkbox-label { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 13px; margin-top: 14px; cursor: pointer; }
         
         .btn-primario { 
-            background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none; 
-            padding: 14px; width: 100%; border-radius: 10px; font-weight: 700; cursor: pointer; 
-            font-size: 15px; margin-top: 20px; transition: transform 0.1s;
+            background: var(--primary-gradient); color: white; border: none; 
+            padding: 14px; width: 100%; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; 
+            font-size: 14px; margin-top: 24px; box-shadow: 0 4px 12px rgba(37,99,235,0.2);
+            transition: all 0.2s;
         }
-        .btn-primario:active { transform: scale(0.98); }
+        .btn-primario:active { transform: scale(0.98); opacity: 0.95; }
         .btn-volver { 
-            background: var(--borde); border: none; padding: 10px 14px; border-radius: 8px; 
-            font-weight: 600; color: var(--texto-dark); cursor: pointer; margin-bottom: 15px;
+            background: var(--surface); border: 1px solid var(--border); padding: 10px 16px; border-radius: var(--radius-sm); 
+            font-weight: 700; font-size: 13px; color: var(--text-main); cursor: pointer; margin-bottom: 20px;
+            box-shadow: var(--shadow-sm); transition: background 0.2s;
         }
+        .btn-volver:active { background: var(--surface-accent); }
 
-        /* Tarjetas de Profesionales Estilizadas */
+        /* Tarjetas de Profesionales (SaaS Layout) */
         .card-profesional { 
-            background: var(--blanco-card); border-radius: 16px; padding: 16px; margin-bottom: 16px; 
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); border: 1px solid var(--borde);
-            animation: slideUp 0.4s ease-out;
+            background: var(--surface); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px; 
+            box-shadow: var(--shadow-md); border: 1px solid var(--border);
+            position: relative; overflow: hidden;
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .prof-bloque-superior { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
+        .prof-bloque-superior { display: flex; gap: 14px; align-items: center; margin-bottom: 16px; }
         
         .avatar-iniciales {
-            width: 46px; height: 46px; background: #e0f2fe; color: #0369a1;
+            width: 48px; height: 48px; background: linear-gradient(135deg, #e0f2fe, #bae6fd); color: #0369a1;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 16px; flex-shrink: 0;
+            font-weight: 800; font-size: 15px; flex-shrink: 0; letter-spacing: -0.2px;
         }
-        .prof-info-principal { flex-grow: 1; }
-        .prof-nombre { font-size: 17px; font-weight: 700; color: var(--azul-premium); margin: 0; }
+        .prof-nombre { font-size: 16px; font-weight: 800; color: var(--text-main); margin: 0; letter-spacing: -0.3px; }
         
-        .badge { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 700; display: inline-block; }
+        .badge { font-size: 10px; padding: 4px 10px; border-radius: 30px; font-weight: 800; display: inline-block; text-transform: uppercase; letter-spacing: 0.3px; }
         .badge-v { background: #d1fae5; color: #065f46; }
-        .badge-p { background: var(--gris-fondo); color: var(--texto-suave); }
-        .badge-247 { background: #fee2e2; color: #b91c1c; animation: pulseRed 2s infinite; }
+        .badge-p { background: var(--surface-accent); color: var(--text-muted); border: 1px solid var(--border); }
+        .badge-247 { background: #fee2e2; color: #b91c1c; font-weight: 900; }
 
-        @keyframes pulseRed {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.04); }
-            100% { transform: scale(1); }
-        }
-        
-        .rating { color: #ea580c; font-weight: 700; font-size: 13px; margin-top: 2px; }
-        .cobertura-tag { font-size: 12px; color: var(--celeste-accent); font-weight: 600; margin: 6px 0; }
-        .prof-desc { font-size: 14px; color: var(--texto-dark); line-height: 1.4; margin: 8px 0; }
+        .rating { color: var(--star-color); font-weight: 800; font-size: 13px; margin-top: 3px; display: flex; align-items: center; gap: 4px; }
+        .cobertura-tag { font-size: 12px; color: var(--primary); font-weight: 700; margin: 8px 0; display: flex; align-items: center; gap: 4px; }
+        .prof-desc { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; margin: 10px 0; }
         
         .btn-whatsapp { 
             background: var(--verde-wa); color: white; text-decoration: none; display: flex; 
-            justify-content: center; align-items: center; gap: 8px; padding: 12px; border-radius: 10px; 
-            font-weight: 700; margin-top: 12px; box-shadow: 0 4px 8px rgba(34,197,94,0.15);
-            transition: transform 0.1s;
+            justify-content: center; align-items: center; gap: 8px; padding: 14px; border-radius: var(--radius-md); 
+            font-weight: 700; font-size: 13.5px; margin-top: 14px; box-shadow: 0 4px 10px rgba(22,163,74,0.15);
+            transition: transform 0.15s;
         }
         .btn-whatsapp:active { transform: scale(0.98); }
 
         .btn-evaluar {
-            background: var(--gris-fondo); color: var(--texto-dark); border: 1px solid var(--borde); display: block;
-            text-align: center; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 700;
-            margin-top: 10px; cursor: pointer; text-decoration: none; width: 100%; box-sizing: border-box;
+            background: transparent; color: var(--text-main); border: 1px solid var(--border); display: block;
+            text-align: center; padding: 11px; border-radius: var(--radius-md); font-size: 12.5px; font-weight: 700;
+            margin-top: 12px; cursor: pointer; text-decoration: none; width: 100%; box-sizing: border-box;
+            transition: background 0.2s;
         }
+        .btn-evaluar:hover { background: var(--surface-accent); }
 
+        /* Comentarios Estilo Feed */
         .contenedor-comentarios {
-            background: var(--gris-fondo); border-radius: 10px; padding: 10px; margin-top: 10px; font-size: 12px;
-            border: 1px solid var(--borde); color: var(--texto-dark);
+            background: var(--surface-accent); border-radius: var(--radius-md); padding: 14px; margin-top: 14px; font-size: 12px;
+            border: 1px solid var(--border);
         }
-        .item-comentario { border-bottom: 1px dashed var(--borde); padding: 6px 0; }
+        .item-comentario { border-bottom: 1px solid var(--border); padding: 8px 0; }
         .item-comentario:last-child { border: none; }
 
-        .grid-utilidad { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
-        .card-utilidad { background: var(--blanco-card); border: 1px solid var(--borde); border-radius: 12px; padding: 12px; text-align: center; text-decoration: none; color: inherit; }
-        .card-utilidad h5 { margin: 0 0 4px 0; font-size: 13px; color: var(--azul-premium); font-weight: 700; }
-        .card-utilidad span { font-size: 14px; color: var(--rojo-emergencia); font-weight: 800; display: block; }
+        .grid-utilidad { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 24px; }
+        .card-utilidad { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px; text-align: center; text-decoration: none; color: inherit; box-shadow: var(--shadow-sm); }
+        .card-utilidad h5 { margin: 0 0 4px 0; font-size: 12px; color: var(--text-main); font-weight: 700; }
+        .card-utilidad span { font-size: 15px; color: var(--rojo-emergencia); font-weight: 800; display: block; }
 
-        /* Modal */
+        /* Modal Rediseñado (Glassmorphism de fondo) */
         .modal {
             display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
-            z-index: 1000; align-items: center; justify-content: center; padding: 20px;
+            background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; padding: 20px;
         }
         .modal.activa { display: flex; }
         .modal-contenido {
-            background: var(--blanco-card); width: 100%; max-width: 400px; padding: 20px;
-            border-radius: 16px; border: 1px solid var(--borde);
+            background: var(--surface); width: 100%; max-width: 380px; padding: 24px;
+            border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--border);
+            animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .estrellas-selector { display: flex; gap: 10px; font-size: 32px; margin: 12px 0; cursor: pointer; }
-        .estrella-voto { color: var(--borde); transition: color 0.1s; }
-        .estrella-voto.marcada { color: var(--amarillo-estrella); }
+        @keyframes modalPop {
+            from { transform: scale(0.9) translateY(10px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .estrellas-selector { display: flex; gap: 8px; font-size: 30px; margin: 12px 0; cursor: pointer; color: var(--border); }
+        .estrella-voto.marcada { color: var(--star-color); }
 
-        /* Barra Inferior Premium */
+        /* Barra Inferior Estilo Islote */
         .nav-inferior { 
-            position: fixed; bottom: 0; left: 0; right: 0; background: var(--blanco-card); 
-            border-top: 1px solid var(--borde); display: flex; justify-content: space-around; padding: 12px 0 20px; 
-            z-index: 90; transition: background-color 0.3s;
+            position: fixed; bottom: 16px; left: 16px; right: 16px; 
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            display: flex; justify-content: space-around; padding: 10px 0; 
+            border-radius: 24px; box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.15); z-index: 90;
         }
-        .nav-item { background: none; border: none; color: var(--texto-suave); font-size: 11px; cursor: pointer; text-align: center; }
-        .nav-item.activo { color: var(--celeste-accent); font-weight: 700; }
-        .nav-item .nav-icono { font-size: 20px; display: block; margin-bottom: 4px; }
+        @media (prefers-color-scheme: dark) {
+            .nav-inferior {
+                background: rgba(21, 31, 50, 0.85);
+                border-color: rgba(51, 65, 85, 0.5);
+                box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            }
+        }
+        .nav-item { background: none; border: none; color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; text-align: center; width: 30%; transition: color 0.2s; }
+        .nav-item.activo { color: var(--primary); font-weight: 800; }
+        .nav-item .nav-icono { font-size: 18px; display: block; margin-bottom: 3px; }
     </style>
 </head>
 <body>
 
-    <header>🛠️ Osorno Servicios</header>
+    <header>Osorno Servicios</header>
     <div class="sub-header" id="info-usuario">📍 Modo Invitado</div>
     
     <div class="container">
@@ -228,15 +259,15 @@
             <div class="banner-emergencia" onclick="verEmergencias()">
                 <div class="banner-emergencia-texto">
                     <h4>🚨 Turnos de Emergencia 24/7</h4>
-                    <p>Maestros disponibles por temporales y fugas.</p>
+                    <p>Maestros de guardia frente a imprevistos climáticos.</p>
                 </div>
-                <button class="btn-banner-rojo">Ver Listado</button>
+                <button class="btn-banner-rojo">Ver Ahora</button>
             </div>
 
             <div class="bloque-busqueda">
-                <input type="text" id="input-buscar" class="input-buscador" placeholder="¿Qué buscas? Ej: calefont, caño, cables..." oninput="filtrarBusquedaGlobal()">
+                <input type="text" id="input-buscar" class="input-buscador" placeholder="¿Qué necesitas solucionar hoy?..." oninput="filtrarBusquedaGlobal()">
                 <select id="select-filtro-sector" class="select-sector" onchange="filtrarBusquedaGlobal()">
-                    <option value="">🗺️ Ver todos los sectores de Osorno</option>
+                    <option value="">🗺️ Todos los sectores de Osorno</option>
                     <option value="Rahue">Rahue (Alto / Bajo / II)</option>
                     <option value="Francke">Francke / Pampa Alegre</option>
                     <option value="Ovejería">Ovejería (Alto / Bajo)</option>
@@ -245,42 +276,36 @@
                 </select>
             </div>
 
-            <div id="resultados-busqueda-directa" style="display:none; margin-bottom:20px;">
-                <h3 style="font-size:16px; margin-top:0; color:var(--azul-premium);">Resultados encontrados:</h3>
+            <div id="resultados-busqueda-directa" style="display:none; margin-bottom:24px;">
+                <h3 style="font-size:14px; margin-top:0; color:var(--text-main); letter-spacing:-0.2px;">Resultados de búsqueda:</h3>
                 <div id="lista-resultados-globales"></div>
-                <hr style="border:0; border-top: 1px dashed var(--borde); margin: 20px 0;">
-                <h3 style="font-size:15px; color:var(--texto-suave);">O navega por categorías:</h3>
+                <hr style="border:0; border-top: 1px dashed var(--border); margin: 20px 0;">
+                <h3 style="font-size:13px; color:var(--text-muted); font-weight:700;">EXPLORAR CATEGORÍAS</h3>
             </div>
 
             <div class="grid-categorias" id="contenedor-categorias-home">
-                <!-- Gasfitería (Icono Llave Inglesa SVG) -->
                 <button class="card-categoria" onclick="verCategoria('Gasfitería')">
-                    <svg viewBox="0 0 24 24"><path d="M19.34 16.14l-2.4-2.4c.54-.86.86-1.88.86-2.98 0-3.03-2.47-5.5-5.5-5.5-.32 0-.64.03-.95.08L13.5 7.5l-2 2-2.16-2.16-2.66 2.66 2.16 2.16-2 2-2.16-2.16-.08.95c0 3.03 2.47 5.5 5.5 5.5 1.1 0 2.12-.32 2.98-.86l2.4 2.4c.59.59 1.54.59 2.12 0l1.42-1.42c.59-.58.59-1.53 0-2.12z"/></svg>
+                    <div class="icon-wrapper"><svg viewBox="0 0 24 24"><path d="M19.34 16.14l-2.4-2.4c.54-.86.86-1.88.86-2.98 0-3.03-2.47-5.5-5.5-5.5-.32 0-.64.03-.95.08L13.5 7.5l-2 2-2.16-2.16-2.66 2.66 2.16 2.16-2 2-2.16-2.16-.08.95c0 3.03 2.47 5.5 5.5 5.5 1.1 0 2.12-.32 2.98-.86l2.4 2.4c.59.59 1.54.59 2.12 0l1.42-1.42c.59-.58.59-1.53 0-2.12z"/></svg></div>
                     Gasfitería
                 </button>
-                <!-- Electricistas (Icono Rayo SVG) -->
                 <button class="card-categoria" onclick="verCategoria('Electricistas')">
-                    <svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+                    <div class="icon-wrapper"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></div>
                     Electricistas
                 </button>
-                <!-- Construcción (Icono Pared/Ladrillos SVG) -->
                 <button class="card-categoria" onclick="verCategoria('Construcción')">
-                    <svg viewBox="0 0 24 24"><path d="M19 4H5c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-9 14H5v-3h5v3zm0-4.5H5v-3h5v3zm0-4.5H5V6h5v3zm9 9h-7.5v-3H19v3zm0-4.5h-7.5v-3H19v3zm0-4.5h-7.5V6H19v3z"/></svg>
+                    <div class="icon-wrapper"><svg viewBox="0 0 24 24"><path d="M19 4H5c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-9 14H5v-3h5v3zm0-4.5H5v-3h5v3zm0-4.5H5V6h5v3zm9 9h-7.5v-3H19v3zm0-4.5h-7.5v-3H19v3zm0-4.5h-7.5V6H19v3z"/></svg></div>
                     Construcción
                 </button>
-                <!-- Limpia Caños (Icono Fuego/Calor SVG) -->
                 <button class="card-categoria" onclick="verCategoria('Ductos y Estufas')">
-                    <svg viewBox="0 0 24 24"><path d="M12 2.69c-5.14 0-9.31 4.17-9.31 9.31 0 3.48 1.91 6.5 4.75 8.12.28.16.63-.04.63-.37V17c0-2.76 2.24-5 5-5h.69c1.82 0 3.31-1.49 3.31-3.31V8c0-2.93-2.36-5.31-5.31-5.31zM17.47 18.3c1.39-1.74 2.22-3.92 2.22-6.3 0-5.69-4.62-10.31-10.31-10.31S-.93 6.31-.93 12c0 3.51 1.76 6.62 4.47 8.5.34.23.8-.02.8-.43v-2.25c0-1.66 1.34-3 3-3h2c2.76 0 5-2.24 5-5v-.5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5c0 2.44-1.2 4.6-3.04 5.92-.31.22-.38.66-.16.97.22.31.66.38.97.16z"/></svg>
+                    <div class="icon-wrapper"><svg viewBox="0 0 24 24"><path d="M12 2.69c-5.14 0-9.31 4.17-9.31 9.31 0 3.48 1.91 6.5 4.75 8.12.28.16.63-.04.63-.37V17c0-2.76 2.24-5 5-5h.69c1.82 0 3.31-1.49 3.31-3.31V8c0-2.93-2.36-5.31-5.31-5.31zM17.47 18.3c1.39-1.74 2.22-3.92 2.22-6.3 0-5.69-4.62-10.31-10.31-10.31S-.93 6.31-.93 12c0 3.51 1.76 6.62 4.47 8.5.34.23.8-.02.8-.43v-2.25c0-1.66 1.34-3 3-3h2c2.76 0 5-2.24 5-5v-.5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5c0 2.44-1.2 4.6-3.04 5.92-.31.22-.38.66-.16.97.22.31.66.38.97.16z"/></svg></div>
                     Limpia Caños
                 </button>
-                <!-- Línea Blanca (Icono Copo de Nieve SVG) -->
                 <button class="card-categoria" onclick="verCategoria('Línea Blanca')">
-                    <svg viewBox="0 0 24 24"><path d="M22 11h-4.17l3.24-3.24-1.41-1.41L15 11h-2V9l4.66-4.66-1.41-1.41L13 6.17V2h-2v4.17L7.76 2.93 6.34 4.34 11 9v2H9L4.34 6.34 2.93 7.76 6.17 11H2v2h4.17l-3.24 3.24 1.41 1.41L11 13v2l-4.66 4.66 1.41 1.41L11 17.83V22h2v-4.17l3.24 3.24 1.41-1.41L13 15v-2h2l4.66 4.66 1.41-1.41L17.83 13H22v-2z"/></svg>
+                    <div class="icon-wrapper"><svg viewBox="0 0 24 24"><path d="M22 11h-4.17l3.24-3.24-1.41-1.41L15 11h-2V9l4.66-4.66-1.41-1.41L13 6.17V2h-2v4.17L7.76 2.93 6.34 4.34 11 9v2H9L4.34 6.34 2.93 7.76 6.17 11H2v2h4.17l-3.24 3.24 1.41 1.41L11 13v2l-4.66 4.66 1.41 1.41L11 17.83V22h2v-4.17l3.24 3.24 1.41-1.41L13 15v-2h2l4.66 4.66 1.41-1.41L17.83 13H22v-2z"/></svg></div>
                     Línea Blanca
                 </button>
-                <!-- Jardinería (Icono Planta/Brote SVG) -->
                 <button class="card-categoria" onclick="verCategoria('Jardinería')">
-                    <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.17 19.53 10.53 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+                    <div class="icon-wrapper"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.17 19.53 10.53 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg></div>
                     Jardinería
                 </button>
             </div>
@@ -289,17 +314,17 @@
         <!-- PANTALLA 2: LISTA GENERAL -->
         <div id="pantalla-lista" class="pantalla">
             <button class="btn-volver" onclick="irA('home')">← Volver al Inicio</button>
-            <h2 id="titulo-cat" style="font-size: 20px; margin-top: 0; color:var(--azul-premium);"></h2>
+            <h2 id="titulo-cat" style="font-size: 18px; margin-top: 0; color:var(--text-main); letter-spacing: -0.4px;"></h2>
             
             <div id="bloque-telefonos-publicos" style="display:none;">
-                <h4 style="margin: 0 0 10px 0; color:var(--texto-suave); font-size:14px;">Asistencia Comunal Osorno:</h4>
+                <h4 style="margin: 0 0 12px 0; color:var(--text-muted); font-size:13px;">Asistencia Comunal Osorno:</h4>
                 <div class="grid-utilidad">
                     <a href="tel:132" class="card-utilidad"><h5>🚒 Bomberos</h5><span>132</span></a>
                     <a href="tel:131" class="card-utilidad"><h5>🚑 SAMU</h5><span>131</span></a>
                     <a href="tel:133" class="card-utilidad"><h5>🚓 Carabineros</h5><span>133</span></a>
-                    <a href="tel:6004012020" class="card-utilidad"><h5>💡 SAESA</h5><span>600 401 2020</span></a>
+                    <a href="tel:6004012020" class="card-utilidad"><h5>💡 SAESA</h5><span>600 401</span></a>
                 </div>
-                <h4 style="margin: 15px 0 10px 0; color:var(--rojo-emergencia); font-size:14px;">Técnicos 24 Horas Disponibles:</h4>
+                <h4 style="margin: 20px 0 12px 0; color:var(--rojo-emergencia); font-size:13px; font-weight:800;">TÉCNICOS DISPONIBLES AHORA:</h4>
             </div>
 
             <div id="lista-maestros"></div>
@@ -307,7 +332,7 @@
 
         <!-- PANTALLA 3: REGISTRO MAESTRO -->
         <div id="pantalla-registro-prof" class="pantalla">
-            <h2 style="margin-top:0;">Registro de Profesionales</h2>
+            <h2 style="margin-top:0; font-size:20px; letter-spacing:-0.4px;">Registro de Profesionales</h2>
             <form id="form-prof" onsubmit="registrarProfesional(event)">
                 <label>Nombre Completo</label>
                 <input type="text" id="p-nombre" required placeholder="Ej: Juan Soto">
@@ -335,9 +360,9 @@
 
         <!-- PANTALLA 4: PERFIL CLIENTE -->
         <div id="pantalla-perfil" class="pantalla">
-            <h2 style="margin-top:0;">Perfil de Usuario</h2>
+            <h2 style="margin-top:0; font-size:20px; letter-spacing:-0.4px;">Perfil de Usuario</h2>
             <div id="bloque-registro-cliente">
-                <p style="color: var(--texto-suave); font-size:14px;">Regístrate como vecino para calificar a los maestros locales de la comuna.</p>
+                <p style="color: var(--text-muted); font-size:13.5px; line-height:1.5;">Regístrate como vecino para calificar a los maestros locales de la comuna.</p>
                 <form id="form-cliente" onsubmit="registrarCliente(event)">
                     <label>Tu Nombre</label>
                     <input type="text" id="c-nombre" required placeholder="Ej: María José">
@@ -346,10 +371,10 @@
                     <button type="submit" class="btn-primario">Crear Cuenta</button>
                 </form>
             </div>
-            <div id="bloque-perfil-activo" style="display:none; background:var(--blanco-card); padding:20px; border-radius:16px; border:1px solid var(--borde);">
-                <h3>¡Hola, <span id="user-nombre" style="color:var(--celeste-accent);"></span>!</h3>
-                <p>📍 <b>Sector residencial:</b> <span id="user-sector"></span></p>
-                <button class="btn-volver" onclick="cerrarSesion()" style="background:#fee2e2; color:#991b1b; width:100%; border:none; padding:12px; margin-top:15px; border-radius:10px; font-weight:700;">Cerrar Sesión</button>
+            <div id="bloque-perfil-activo" style="display:none; background:var(--surface); padding:20px; border-radius:var(--radius-lg); border:1px solid var(--border);">
+                <h3>¡Hola, <span id="user-nombre" style="color:var(--primary);"></span>!</h3>
+                <p style="font-size:14px;">📍 <b>Sector residencial:</b> <span id="user-sector" style="color:var(--text-muted)"></span></p>
+                <button class="btn-volver" onclick="cerrarSesion()" style="background:#fee2e2; color:#991b1b; width:100%; border:none; padding:12px; margin-top:15px; border-radius:var(--radius-md); font-weight:700;">Cerrar Sesión</button>
             </div>
         </div>
 
@@ -358,8 +383,8 @@
     <!-- Modal Calificación -->
     <div id="modal-calificacion" class="modal">
         <div class="modal-contenido">
-            <h3 style="margin-top:0; color:var(--azul-premium);" id="modal-titulo-maestro">Calificar Maestro</h3>
-            <p style="font-size:13px; color:var(--texto-suave); margin-bottom:10px;">Selecciona el nivel de satisfacción:</p>
+            <h3 style="margin-top:0; color:var(--text-main);" id="modal-titulo-maestro">Calificar Maestro</h3>
+            <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">Selecciona el nivel de satisfacción:</p>
             
             <div class="estrellas-selector">
                 <span class="estrella-voto" onclick="asignarVotoEstrellas(1)">★</span>
@@ -401,7 +426,7 @@
             },
             { 
                 nombre: "Andrés Muñoz", categoria: "Electricistas", cobertura: "Todo Osorno, Pilauco", fono: "56955554444", 
-                desc: "Técnico certificado SEC. Reparación de cortocorticuitos y tableros eléctricos de urgencia.", 
+                desc: "Técnico certificado SEC. Reparación de cortocircuitos y tableros eléctricos de urgencia.", 
                 verificado: false, emergencia247: true,
                 reseñas: [] 
             }
@@ -455,20 +480,20 @@
         }
 
         function obtenerRatingVisual(maestro) {
-            if(!maestro.reseñas || maestro.reseñas.length === 0) return "⭐ Nuevo (Sin reseñas)";
+            if(!maestro.reseñas || maestro.reseñas.length === 0) return "★ Nuevo";
             const suma = maestro.reseñas.reduce((acc, r) => acc + r.estrellas, 0);
             const promedio = (suma / maestro.reseñas.length).toFixed(1);
-            return `⭐ ${promedio} (${maestro.reseñas.length} ${maestro.reseñas.length === 1 ? 'reseña' : 'reseñas'})`;
+            return `★ ${promedio} (${maestro.reseñas.length})`;
         }
 
         function generarBloqueComentariosHTML(maestro) {
             if(!maestro.reseñas || maestro.reseñas.length === 0) return "";
-            let html = `<div class="contenedor-comentarios"><strong>Opiniones de vecinos:</strong>`;
+            let html = `<div class="contenedor-comentarios"><strong style="display:block;margin-bottom:4px;">Opiniones de vecinos:</strong>`;
             maestro.reseñas.forEach(r => {
                 html += `
                     <div class="item-comentario">
-                        <b style="color:var(--azul-premium);">${r.autor}</b> <span style="color:var(--texto-suave);">(${r.sector})</span> - <span style="color:var(--amarillo-estrella);">★ ${r.estrellas}</span>
-                        <div style="margin-top:2px; color:var(--texto-dark);">"${r.texto}"</div>
+                        <b style="color:var(--text-main);">${r.autor}</b> <span style="color:var(--text-muted);">(${r.sector})</span> - <span style="color:var(--star-color);">★ ${r.estrellas}</span>
+                        <div style="margin-top:2px; color:var(--text-main); font-style: italic;">"${r.texto}"</div>
                     </div>
                 `;
             });
@@ -553,7 +578,7 @@
             });
 
             if (filtrados.length === 0) {
-                contenedorLista.innerHTML = "<p style='color:var(--texto-suave); font-size:14px; font-style:italic;'>No se encontraron resultados.</p>";
+                contenedorLista.innerHTML = "<p style='color:var(--text-muted); font-size:13px; font-style:italic;'>No se encontraron resultados para los filtros aplicados.</p>";
                 return;
             }
 
@@ -572,7 +597,7 @@
             contenedor.innerHTML = "";
 
             if(filtrados.length === 0) {
-                contenedor.innerHTML = "<p style='margin-top:20px; font-style:italic; color:var(--texto-suave);'>No hay técnicos en esta categoría.</p>";
+                contenedor.innerHTML = "<p style='margin-top:20px; font-style:italic; color:var(--text-muted); font-size:13.5px;'>No hay técnicos registrados en esta categoría.</p>";
                 return;
             }
             renderizarTarjetas(filtrados, contenedor, "cat");
@@ -590,7 +615,7 @@
             contenedor.innerHTML = "";
 
             if(filtrados.length === 0) {
-                contenedor.innerHTML = "<p style='margin-top:15px; font-style:italic; color:var(--texto-suave);'>No hay turnos de emergencia reportados hoy.</p>";
+                contenedor.innerHTML = "<p style='margin-top:15px; font-style:italic; color:var(--text-muted);'>No hay turnos de emergencia activos hoy.</p>";
                 return;
             }
             renderizarTarjetas(filtrados, contenedor, "emerg");
@@ -601,26 +626,29 @@
                 const iniciales = m.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
                 const tarjeta = document.createElement('div');
                 tarjeta.className = 'card-profesional';
-                tarjeta.style.borderLeft = m.emergencia247 ? '5px solid var(--rojo-emergencia)' : `5px solid ${m.verificado ? 'var(--verde-wa)' : 'var(--borde)'}`;
+                tarjeta.style.borderTop = m.emergencia247 ? '4px solid var(--rojo-emergencia)' : 'none';
                 
                 tarjeta.innerHTML = `
                     <div class="prof-bloque-superior">
-                        <div class="avatar-iniciales" style="${m.emergencia247 ? 'background:#fee2e2; color:#b91c1c;' : ''}">${iniciales}</div>
+                        <div class="avatar-iniciales">${iniciales}</div>
                         <div class="prof-info-principal">
-                            <div class="prof-nombre">${m.nombre} ${prefijoId === 'busq' || prefijoId === 'emerg' ? `<span style='font-size:12px; font-weight:normal; color:var(--texto-suave);'>(${m.categoria})</span>`:''}</div>
+                            <div class="prof-nombre">${m.nombre} ${prefijoId === 'busq' || prefijoId === 'emerg' ? `<span style='font-size:11px; font-weight:500; color:var(--text-muted);'>(${m.categoria})</span>`:''}</div>
                             <div class="rating">${obtenerRatingVisual(m)}</div>
                         </div>
                         <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-end;">
                             ${m.emergencia247 ? '<span class="badge badge-247">🚨 24/7</span>' : ''}
-                            ${m.verificado ? '<span class="badge badge-v">✅ Verificado</span>' : '<span class="badge badge-p">⏳ Pendiente</span>'}
+                            ${m.verificado ? '<span class="badge badge-v">✓ Verificado</span>' : '<span class="badge badge-p">Pendiente</span>'}
                         </div>
                     </div>
-                    <div class="cobertura-tag">📍 Cobertura: ${m.cobertura}</div>
+                    <div class="cobertura-tag">
+                        <svg style="width:14px;height:14px;fill:currentColor;" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        ${m.cobertura}
+                    </div>
                     <div class="prof-desc">${m.desc}</div>
                     ${generarBloqueComentariosHTML(m)}
-                    <button class="btn-evaluar" id="btn-${prefijoId}-${idx}">📝 Dejar Reseña como Vecino</button>
+                    <button class="btn-evaluar" id="btn-${prefijoId}-${idx}">Escribir una reseña</button>
                     <a class="btn-whatsapp" style="${m.emergencia247 ? 'background:var(--rojo-emergencia);' : ''}" href="https://wa.me/${m.fono}?text=¡EMERGENCIA!%20Hola%20${encodeURIComponent(m.nombre)},%20necesito%20asistencia%20urgente%20desde%20Osorno%20Servicios." target="_blank">
-                        <span>💬</span> ${m.emergencia247 ? 'CONTACTAR URGENTE 24/7' : 'Contactar por WhatsApp'}
+                        Contactar por WhatsApp
                     </a>
                 `;
                 contenedor.appendChild(tarjeta);
